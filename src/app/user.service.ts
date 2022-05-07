@@ -3,8 +3,7 @@ import { User } from "./model/user";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 
-let httpOptions;
-httpOptions = {
+const httpOptions = {
   headers: new HttpHeaders({'Accept': 'application/json', 'Content-Type': 'application/json'})
 };
 
