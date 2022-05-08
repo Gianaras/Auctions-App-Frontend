@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from "../../user.service";
 import { User } from "../../model/user";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-user',
@@ -13,8 +14,15 @@ export class UserComponent implements OnInit {
 
   constructor (private service: UserService) { }
 
-  ngOnInit(): void {
-    this.service.getUsers().subscribe(users => this.users = users)
+  ngOnInit() {
+    this.service.getUsers().subscribe(
+      (response: User[]) => {
+        this.users = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message)
+      }
+    )
   }
 
 }
