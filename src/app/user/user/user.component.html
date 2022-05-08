@@ -1,5 +1,6 @@
 <ol>
   <li *ngFor='let user of users'>
-    {{user.username}}
+    <a [routerLink]="['/users', user.id]">{{user.username}} </a>
   </li>
 </ol>
+<router-outlet></router-outlet>

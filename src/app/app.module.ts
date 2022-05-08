@@ -7,6 +7,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { UserService } from "./user.service";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
+import { UserDetailsComponent } from "./user/user-details/user-details.component";
 
 const appRoutes: Routes = [
   {
@@ -15,6 +16,10 @@ const appRoutes: Routes = [
       {
         path: '',
         component: UserComponent
+      },
+      {
+        path: ':id',
+        component: UserDetailsComponent
       }
     ]
   }
@@ -23,7 +28,8 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent
+    UserComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,
