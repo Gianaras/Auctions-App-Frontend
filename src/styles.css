@@ -3,8 +3,15 @@
   text-align: center;
 }
 
+/* general use */
 a {
   margin-right: 15px;
+}
+
+/* used for warnings and errors */
+b {
+  margin-right: 15px;
+  color: maroon;
 }
 
 body {
@@ -12,3 +19,33 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   font-size: large;
 }
+
+input[type=text] {
+  margin: 1px 0 15px;
+  border: 2px solid black;
+  border-radius: 2px;
+  padding: 3px;
+}
+
+input[type=password] {
+  margin: 1px 0 15px;
+  border: 2px solid black;
+  border-radius: 2px;
+  padding: 3px;
+}
+
+label{
+  display: flex;
+}
+
+button {
+  background-color: coral;
+  border: 2px solid black;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 120px;
+}
+
+
+

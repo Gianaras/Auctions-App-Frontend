@@ -1,0 +1,92 @@
+<div *ngIf="form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="username">Username: </label>
+      <input id="username" type="text" formControlName="username" />
+      <div *ngIf="submitted && formControls['username'].errors">
+        <b> <div *ngIf="formControls['username'].errors['required']">Username is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="password">Password: </label>
+      <input id="password" type="password" formControlName="password" />
+      <div *ngIf="submitted && formControls['password'].errors">
+        <b> <div *ngIf="formControls['password'].errors['required']">Password is required.</div> </b>
+        <b> <div *ngIf="formControls['password'].errors['minlength']">Password must be at least 6 characters.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="repeatPassword"> Repeat password: </label>
+      <input id="repeatPassword" type="password" formControlName="repeatPassword" />
+      <b> <div *ngIf="submitted && (formControls['password'].value != formControls['repeatPassword'].value)">
+        Passwords must match.
+      </div> </b>
+    </div>
+
+    <div>
+      <label for="firstName">First name: </label>
+      <input id="firstName" type="text" formControlName="firstName" />
+      <div *ngIf="submitted && formControls['firstName'].errors">
+        <b> <div *ngIf="formControls['firstName'].errors['required']">First Name is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="lastName">Last name: </label>
+      <input id="lastName" type="text" formControlName="lastName" />
+      <div *ngIf="submitted && formControls['lastName'].errors">
+        <b> <div *ngIf="formControls['lastName'].errors['required']">Last name is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="email">Email: </label>
+      <input id="email" type="text" formControlName="email" />
+      <div *ngIf="submitted && formControls['email'].errors">
+        <b> <div *ngIf="formControls['email'].errors['required']">Email is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="phone">Phone: </label>
+      <input id="phone" type="text" formControlName="phone" />
+      <div *ngIf="submitted && formControls['phone'].errors">
+        <b> <div *ngIf="formControls['phone'].errors['required']">Phone is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="address">Address: </label>
+      <input id="address" type="text" formControlName="address" />
+      <div *ngIf="submitted && formControls['address'].errors">
+        <b> <div *ngIf="formControls['address'].errors['required']">Address is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="country">Country: </label>
+      <input id="country" type="text" formControlName="country" />
+      <div *ngIf="submitted && formControls['country'].errors">
+        <b> <div *ngIf="formControls['country'].errors['required']">Country is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="city">City: </label>
+      <input id="city" type="text" formControlName="city" />
+      <div *ngIf="submitted && formControls['city'].errors">
+        <b> <div *ngIf="formControls['city'].errors['required']">City is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <b> <button [disabled]="loading">
+        Register
+      </button> </b>
+      <a routerLink="..">Cancel</a>
+    </div>
+  </form>
+</div>
+

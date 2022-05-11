@@ -6,8 +6,9 @@ import { UserComponent } from './user/user/user.component';
 import { RouterModule, Routes } from "@angular/router";
 import { UserService } from "./user.service";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { UserDetailsComponent } from "./user/user-details/user-details.component";
+import { RegisterComponent } from './register/register.component';
 
 const appRoutes: Routes = [
   {
@@ -22,6 +23,11 @@ const appRoutes: Routes = [
         component: UserDetailsComponent
       }
     ]
+  },
+
+  {
+    path: 'register',
+    component: RegisterComponent
   }
 ];
 
@@ -29,14 +35,16 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     UserComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    RegisterComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    RouterModule.forRoot(appRoutes)
-  ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        RouterModule.forRoot(appRoutes),
+        ReactiveFormsModule
+    ],
   providers: [UserService, HttpClient],
   bootstrap: [AppComponent]
 })
