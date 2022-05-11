@@ -22,8 +22,14 @@
       <td>{{user.address}}</td>
       <td>{{user.country}}</td>
       <td>{{user.city}}</td>
-      <td>{{user.isAdmin}}</td>
+      <td>{{user.admin}}</td>
     </tr>
   </table>
+
+  <div *ngIf="user.id && !user.admin">
+    <b> <button (click)="deleteUser(user.id)" [disabled]="isDeleting">
+      Delete user
+    </button> </b>
+  </div>
 </div>
 

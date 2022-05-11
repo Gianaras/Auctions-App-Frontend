@@ -9,7 +9,7 @@ export class User {
   address: string = "";
   country: string = "";
   city: string = "";
-  isAdmin: boolean = false;
+  admin: boolean = false;
   activated: boolean = false;
 
   constructor(username: string, password: string, firstName: string, lastName: string,
@@ -23,7 +23,7 @@ export class User {
     this.address = address;
     this.country = country;
     this.city = city;
-    this.isAdmin = false;
+    this.admin = false;
     this.activated = false;
   }
 }

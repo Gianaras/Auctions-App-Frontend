@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { UserService } from "../../user.service";
 import { User } from "../../model/user";
-import {HttpErrorResponse} from "@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-user-details',
@@ -12,9 +12,11 @@ import {HttpErrorResponse} from "@angular/common/http";
 export class UserDetailsComponent implements OnInit {
 
   user: User | undefined;
+  isDeleting = false;
 
   constructor(private route: ActivatedRoute,
-              private service: UserService) { }
+              private service: UserService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.getUser();
@@ -35,6 +37,20 @@ export class UserDetailsComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         alert(error.message)
+      }
+    );
+  }
+
+  deleteUser(userId: number): void {
+    this.isDeleting = true;
+    this.service.deleteUser(userId).subscribe(
+      () => {
+        alert("Deletion successful!");
+        this.router.navigate(['..'], { relativeTo: this.route });
+      },
+      error => {
+        alert(error.message);
+        this.isDeleting = false;
       }
     );
   }
