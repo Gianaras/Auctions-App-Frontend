@@ -13,6 +13,7 @@ export class UserDetailsComponent implements OnInit {
 
   user: User | undefined;
   isDeleting = false;
+  isActivating = false;
 
   constructor(private route: ActivatedRoute,
               private service: UserService,
@@ -47,6 +48,21 @@ export class UserDetailsComponent implements OnInit {
       () => {
         alert("Deletion successful!");
         this.router.navigate(['..'], { relativeTo: this.route });
+      },
+      error => {
+        alert(error.message);
+        this.isDeleting = false;
+      }
+    );
+  }
+
+  activateUser(): void {
+    if (!this.user) return;
+    this.isActivating = true;
+
+    this.service.activateUser(this.user).subscribe(
+      () => {
+        alert("Activation successful!");
       },
       error => {
         alert(error.message);

@@ -31,4 +31,10 @@ export class UserService {
   deleteUser(userId: number): Observable<any> {
     return this.http.delete(this.usersUrl+"/"+userId);
   }
+
+  activateUser(user: User): Observable<any> {
+    user.activated = true;
+    return this.http.put(this.usersUrl+"/"+user.id, user);
+  }
+
 }

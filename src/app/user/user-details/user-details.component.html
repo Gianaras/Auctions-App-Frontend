@@ -11,6 +11,7 @@
       <th>Country</th>
       <th>City</th>
       <th>isAdmin</th>
+      <th>Activated</th>
     </tr>
     <tr>
       <td>{{user.id}}</td>
@@ -23,12 +24,17 @@
       <td>{{user.country}}</td>
       <td>{{user.city}}</td>
       <td>{{user.admin}}</td>
+      <td>{{user.activated}}</td>
     </tr>
   </table>
 
   <div *ngIf="user.id && !user.admin">
     <b> <button (click)="deleteUser(user.id)" [disabled]="isDeleting">
       Delete user
+    </button> </b>
+
+    <b> <button *ngIf="!user.activated" (click)="activateUser()" [disabled]="isActivating">
+      Activate account
     </button> </b>
   </div>
 </div>
