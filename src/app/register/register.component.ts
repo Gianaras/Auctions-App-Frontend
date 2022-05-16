@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit {
     this.service.addUser(user).subscribe(
       () => {
         alert("Registration successful!");
-        this.router.navigate(['..'], { relativeTo: this.route });
+        this.router.navigate(['/login'], { relativeTo: this.route });
       },
       error => {
         alert(error.message);
