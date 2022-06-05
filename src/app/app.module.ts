@@ -13,6 +13,9 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from "./guards/auth.guard";
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { ErrorInterceptor } from './helpers/error.interceptor';
+import { ItemsComponent } from "./items/items.component";
+import { ItemDetailsComponent } from "./item-details/item-details.component";
+import { ItemsService } from "./services/items.service";
 
 const appRoutes: Routes = [
   {
@@ -38,7 +41,22 @@ const appRoutes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+
+  {
+    path: 'items',
+    children: [
+      {
+        path: '',
+        component: ItemsComponent
+      },
+      {
+        path: ':id',
+        component: ItemDetailsComponent
+      }
+    ]
   }
+
 ];
 
 @NgModule({
@@ -47,7 +65,9 @@ const appRoutes: Routes = [
     UserComponent,
     UserDetailsComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ItemsComponent,
+    ItemDetailsComponent
   ],
     imports: [
         BrowserModule,
@@ -58,6 +78,7 @@ const appRoutes: Routes = [
     ],
   providers: [
     UserService,
+    ItemsService,
     HttpClient,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

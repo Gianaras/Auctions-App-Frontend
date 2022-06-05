@@ -1,0 +1,6 @@
+<ol>
+  <li *ngFor='let items of allItems'>
+    <a [routerLink]="['/items', items.id]">{{items.id}} </a>
+  </li>
+</ol>
+<router-outlet></router-outlet>

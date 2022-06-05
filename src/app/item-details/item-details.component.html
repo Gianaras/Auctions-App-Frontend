@@ -1,0 +1,28 @@
+<div *ngIf="items">
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Current Bid</th>
+      <th>Buy Price</th>
+      <th>First Bid</th>
+      <th>Number of Bids</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Seller Id</th>
+      <th>Location Id</th>
+    </tr>
+    <tr>
+      <td>{{items.id}}</td>
+      <td>{{items.currentBid}}</td>
+      <td>{{items.buyPrice}}</td>
+      <td>{{items.firstBid}}</td>
+      <td>{{items.numberOfBids}}</td>
+      <td>{{items.started}}</td>
+      <td>{{items.ends}}</td>
+      <td>{{items.sellerId}}</td>
+      <td>{{items.locationId}}</td>
+    </tr>
+  </table>
+</div>
+
+

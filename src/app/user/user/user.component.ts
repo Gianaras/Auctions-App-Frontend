@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
         this.users = response;
       },
       (error: HttpErrorResponse) => {
-        alert(error.message)
+        alert(error.message);
       }
     )
   }
