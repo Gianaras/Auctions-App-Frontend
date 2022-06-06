@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Items } from "../model/items";
+import { Bid } from "../model/bid";
 
 const httpOptions = {
   headers: new HttpHeaders({'Accept': 'application/json', 'Content-Type': 'application/json'})
@@ -26,6 +27,10 @@ export class ItemsService {
 
   addItems(items: Items): Observable<any> {
     return this.http.post(this.itemsUrl, items);
+  }
+
+  addBid(itemsId: number, amount : number, bidderName : string): Observable<any> {
+    return this.http.post(this.itemsUrl+"/"+itemsId, new Bid(amount, bidderName));
   }
 
   deleteItems(itemsId: number): Observable<any> {

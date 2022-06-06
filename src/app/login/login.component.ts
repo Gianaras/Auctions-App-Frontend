@@ -41,8 +41,10 @@ export class LoginComponent implements OnInit {
         response => {
           localStorage.setItem('token', <string>response.headers.get('Authorization'));
           localStorage.setItem('isAdmin', <string>response.headers.get('IsAdmin'));
+          localStorage.setItem('username', <string>response.headers.get('Username'));
           console.log(<string>response.headers.get('Authorization'));
           console.log(<string>response.headers.get('IsAdmin'));
+          console.log(<string>response.headers.get('Username'));
           console.log(response);
           alert("Logged in successfully!");
           this.router.navigate([this.returnUrl]);

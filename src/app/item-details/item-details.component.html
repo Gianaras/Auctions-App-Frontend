@@ -1,3 +1,11 @@
+<div>
+  <h2>Auction details:</h2>
+</div>
+
+<b> <div *ngIf="!active">
+  <h3>This auction is no longer active.</h3>
+</div> </b>
+
 <div *ngIf="items">
   <table>
     <tr>
@@ -23,6 +31,53 @@
       <td>{{items.locationId}}</td>
     </tr>
   </table>
+</div>
+
+<div>
+  <h2>Items included:</h2>
+</div>
+
+<div *ngFor='let myItem of item'>
+  <div *ngIf="myItem">
+    <table>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Items Id</th>
+      </tr>
+      <tr>
+        <td>{{myItem.id}}</td>
+        <td>{{myItem.name}}</td>
+        <td>{{myItem.description}}</td>
+        <td>{{myItem.itemsId}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div *ngIf="isLoggedIn && active">
+  <h2>Place Bid:</h2>
+</div>
+
+
+<div *ngIf="isLoggedIn && active">
+  <form [formGroup]="form" (ngSubmit)="addBid()">
+    <div>
+      <label for="amount">Amount: </label>
+      <input id="amount" type="text" formControlName="amount" />
+      <div *ngIf="submitted && formControls['amount'].errors">
+        <b> <div *ngIf="formControls['amount'].errors['required']">Amount is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <b> <button [disabled]="loading" >
+        Place Bid
+      </button> </b>
+    </div>
+
+  </form>
 </div>
 
 

@@ -22,6 +22,7 @@ export class AuthenticationService {
     // remove items from local storage to log user out
     localStorage.removeItem('token');
     localStorage.removeItem('isAdmin');
+    localStorage.removeItem('username')
     this.router.navigate(['/login']);
   }
 }
