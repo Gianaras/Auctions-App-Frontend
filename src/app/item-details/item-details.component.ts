@@ -3,7 +3,6 @@ import { Items } from "../model/items";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ItemsService } from "../services/items.service";
 import { HttpErrorResponse } from "@angular/common/http";
-import { Item } from "../model/item";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -15,8 +14,6 @@ export class ItemDetailsComponent implements OnInit {
 
   form: FormGroup;
   items: Items | undefined;
-  item: Item[] = [new Item(69, "meat ball", "very tasty", 1),
-                  new Item(70, "armchar", "comfortable and thick", 2)];
   isDeleting = false;
   loading = false;
   isLoggedIn = false;
@@ -51,12 +48,23 @@ export class ItemDetailsComponent implements OnInit {
     this.service.getItems(+id).subscribe(
       (response: Items) => {
         this.items = response;
+        console.log(this.items);
 
         // convert UTC times to typescript dates
         this.items.started = new Date();
         this.items.ends = new Date();
         this.items.started.setTime(this.items.startedUTC);
         this.items.ends.setTime(this.items.endsUTC);
+
+        //convert UTC times to dates for all bids
+        for(let bid of this.items.bids){
+          bid.date = new Date();
+          bid.date.setTime(bid.timeUTC);
+        }
+        //sort bid array to display latest bids first
+        this.items.bids.sort(
+          (bid1, bid2) => bid2.date.getTime() - bid1.date.getTime(),
+        );
 
         // check if auction is active
         let now: Date = new Date();
@@ -84,6 +92,9 @@ export class ItemDetailsComponent implements OnInit {
         " the minimum first bid amount set by the seller (check auction details)");
       return;
     }
+
+
+
 
     // check if auction has run out of time
     let now: Date = new Date();

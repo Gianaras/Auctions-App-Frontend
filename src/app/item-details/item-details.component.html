@@ -37,23 +37,24 @@
   <h2>Items included:</h2>
 </div>
 
-<div *ngFor='let myItem of item'>
-  <div *ngIf="myItem">
-    <table>
-      <tr>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Items Id</th>
-      </tr>
-      <tr>
-        <td>{{myItem.id}}</td>
-        <td>{{myItem.name}}</td>
-        <td>{{myItem.description}}</td>
-        <td>{{myItem.itemsId}}</td>
-      </tr>
-    </table>
-  </div>
+<div *ngIf="items && items.items">
+  <div *ngFor='let myItem of items.items'>
+    <div *ngIf="myItem">
+      <table>
+        <tr>
+          <th>Id</th>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>{{myItem.id}}</td>
+          <td>{{myItem.name}}</td>
+          <td>{{myItem.description}}</td>
+        </tr>
+      </table>
+    </div>
+</div>
+
 </div>
 
 <div *ngIf="isLoggedIn && active">
@@ -78,6 +79,30 @@
     </div>
 
   </form>
+</div>
+
+<div>
+  <h2>Bid History:</h2>
+</div>
+
+
+<div *ngIf="items && items.bids">
+  <div *ngFor='let bid of items.bids'>
+    <div *ngIf="bid">
+      <table>
+        <tr>
+          <th>Bidder</th>
+          <th>Amount</th>
+          <th>Time</th>
+        </tr>
+        <tr>
+          <td>{{bid.bidderName}}</td>
+          <td>{{bid.amount}}</td>
+          <td>{{bid.date}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
 
 

@@ -1,5 +1,10 @@
+import {Item} from "./item";
+import {Bid} from "./bid";
+
 export class Items {
   id: number;
+  items: Item[] = [];
+  bids :Bid[] =[];
   currentBid: number;
   buyPrice: number;
   firstBid: number;
