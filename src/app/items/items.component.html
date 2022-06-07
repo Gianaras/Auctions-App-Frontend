@@ -1,6 +1,26 @@
 <ol>
   <li *ngFor='let items of allItems'>
-    <a [routerLink]="['/items', items.id]">{{items.id}} </a>
+    <a [routerLink]="['/items', items.id]">
+      <div class="midnightBlue" *ngFor="let item of items.items">
+        {{item.name}}
+      </div>
+    </a>
+
+    <div *ngIf="items">
+      <table>
+        <tr>
+          <th>Current Bid</th>
+          <th>Buy Price</th>
+          <th>End Date</th>
+        </tr>
+        <tr>
+          <td>{{items.currentBid}}</td>
+          <td>{{items.buyPrice}}</td>
+          <td>{{items.ends}}</td>
+        </tr>
+      </table>
+    </div>
+
   </li>
 </ol>
 <router-outlet></router-outlet>

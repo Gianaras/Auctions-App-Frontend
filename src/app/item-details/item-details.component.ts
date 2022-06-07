@@ -48,7 +48,6 @@ export class ItemDetailsComponent implements OnInit {
     this.service.getItems(+id).subscribe(
       (response: Items) => {
         this.items = response;
-        console.log(this.items);
 
         // convert UTC times to typescript dates
         this.items.started = new Date();
@@ -93,9 +92,6 @@ export class ItemDetailsComponent implements OnInit {
       return;
     }
 
-
-
-
     // check if auction has run out of time
     let now: Date = new Date();
     if ((now > this.items.ends) || (this.items.currentBid >= this.items.buyPrice)) {
@@ -121,6 +117,9 @@ export class ItemDetailsComponent implements OnInit {
       alert("Congratulations! Your bid was higher than the buy price. You will be able to speak to the seller shortly.");
       this.active = false;
     }
+
+    // refresh
+    this.getItems();
   }
 
 }
