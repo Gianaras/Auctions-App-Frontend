@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Items } from "../model/items";
 import { Bid } from "../model/bid";
+import {Seller} from "../model/seller";
 
 const httpOptions = {
   headers: new HttpHeaders({'Accept': 'application/json', 'Content-Type': 'application/json'})
@@ -14,11 +15,21 @@ const httpOptions = {
 export class ItemsService {
 
   private itemsUrl ='https://localhost:8443/items';
+  private itemsOfSellerUrl ='https://localhost:8443/itemsOfSeller';
+  private sellerOfItemsUrl ='https://localhost:8443/sellerOfItems';
 
   constructor (private http: HttpClient) { }
 
   getAllItems(): Observable<Items[]> {
     return this.http.get<Items[]>(this.itemsUrl);
+  }
+
+  getItemsOfSeller(sellerId: number): Observable<Items[]> {
+    return this.http.get<Items[]>(this.itemsOfSellerUrl + "/" + sellerId);
+  }
+
+  getSellerFromItems(itemsId: number): Observable<Seller> {
+    return this.http.get<Seller>(this.sellerOfItemsUrl + "/" + itemsId);
   }
 
   getItems(itemsId: number): Observable<Items> {

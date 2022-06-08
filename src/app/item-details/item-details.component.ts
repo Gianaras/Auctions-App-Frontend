@@ -3,7 +3,9 @@ import { Items } from "../model/items";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ItemsService } from "../services/items.service";
 import { HttpErrorResponse } from "@angular/common/http";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {User} from "../model/user";
+import {Seller} from "../model/seller";
 
 @Component({
   selector: 'app-item-details',
@@ -17,6 +19,7 @@ export class ItemDetailsComponent implements OnInit {
   isDeleting = false;
   loading = false;
   isLoggedIn = false;
+  isMine = false; // whether the auction seller is the currently logged-in user
   submitted = false;
   active = true;
 
@@ -70,6 +73,10 @@ export class ItemDetailsComponent implements OnInit {
         if (!this.items) return;
         if ((now > this.items.ends) || (this.items.currentBid >= this.items.buyPrice))
           this.active = false;
+
+        // check if this auction belongs to logged-in user
+        if (this.isLoggedIn)
+          this.isThisMine();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -120,6 +127,33 @@ export class ItemDetailsComponent implements OnInit {
 
     // refresh
     this.getItems();
+  }
+
+  // check whether the auction seller is the currently logged-in user
+  isThisMine(): void {
+    let userString: string | null = localStorage.getItem('user');
+    if (!userString) return;
+    let myUser: User = JSON.parse(userString);
+
+    if (!this.items) return;
+    this.loading = true;
+
+    this.service.getSellerFromItems(this.items.id).subscribe(
+      (response) => {
+        let sellerTmp: Seller = response;
+        this.loading = false;
+
+        if (sellerTmp && this.items) {
+          this.items.seller = sellerTmp;
+          if (this.items.seller.id == myUser.seller.id)
+            this.isMine = true;
+        }
+      },
+      error => {
+        alert(error.message);
+        this.loading = false;
+      }
+    );
   }
 
 }

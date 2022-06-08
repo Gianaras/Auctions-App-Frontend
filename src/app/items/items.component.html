@@ -1,5 +1,24 @@
+<div *ngIf="form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="itemSearch">Search for items: </label>
+      <input id="itemSearch" type="text" formControlName="itemSearch" />
+    </div>
+
+    <div>
+      <b> <button [disabled]="loading">
+        Search
+      </button> </b>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="loaded && finalItems.length == 0">
+  <h2>No auctions found.</h2>
+</div>
+
 <ol>
-  <li *ngFor='let items of allItems'>
+  <li *ngFor='let items of finalItems'>
     <a [routerLink]="['/items', items.id]">
       <div class="midnightBlue" *ngFor="let item of items.items">
         {{item.name}}

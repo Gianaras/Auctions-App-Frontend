@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { AuthenticationService } from "../services/authentication.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {UserService} from "../services/user.service";
+import {User} from "../model/user";
 
 @Component({
   selector: 'app-login',
@@ -13,12 +15,14 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted: boolean = false;
   returnUrl: string = '/';
+  user: User | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService,
+    private userService: UserService) {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -40,12 +44,18 @@ export class LoginComponent implements OnInit {
       .subscribe(
         response => {
           localStorage.setItem('token', <string>response.headers.get('Authorization'));
-          localStorage.setItem('isAdmin', <string>response.headers.get('IsAdmin'));
-          localStorage.setItem('username', <string>response.headers.get('Username'));
-          console.log(<string>response.headers.get('Authorization'));
-          console.log(<string>response.headers.get('IsAdmin'));
-          console.log(<string>response.headers.get('Username'));
-          console.log(response);
+          localStorage.setItem('isAdmin', <string>response.headers.get('IsAdmin')); // keep admin status for convenience
+          localStorage.setItem('username', <string>response.headers.get('Username')); // keep username for convenience
+
+          this.userService.getUserFromUsername(<string>response.headers.get('Username'))
+            .subscribe(
+              response => {
+                  this.user = response;
+                  localStorage.setItem('user', JSON.stringify(this.user)); // get rest of user
+                },
+              error => { alert(error); }
+            );
+
           alert("Logged in successfully!");
           this.router.navigate([this.returnUrl]);
           this.loading = false;

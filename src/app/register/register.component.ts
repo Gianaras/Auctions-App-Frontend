@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from "../services/user.service";
 import { User } from "../model/user";
+import {Seller} from "../model/seller";
 
 @Component({
   selector: 'app-register',
@@ -47,7 +48,7 @@ export class RegisterComponent implements OnInit {
 
     let user = new User(this.form.value['username'], this.form.value['password'], this.form.value['firstName'],
       this.form.value['lastName'], this.form.value['email'], this.form.value['phone'], this.form.value['address'],
-      this.form.value['country'], this.form.value['city']);
+      this.form.value['country'], this.form.value['city'], new Seller(-1, -1));
 
     this.service.addUser(user).subscribe(
       () => {

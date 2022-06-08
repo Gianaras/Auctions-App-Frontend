@@ -15,7 +15,8 @@
       <th>First Bid</th>
       <th>Number of Bids</th>
       <th>Seller Id</th>
-      <th>Location Id</th>
+      <th>Seller Rating</th>
+      <th>Location</th>
     </tr>
     <tr>
       <td>{{items.id}}</td>
@@ -23,8 +24,9 @@
       <td>{{items.buyPrice}}</td>
       <td>{{items.firstBid}}</td>
       <td>{{items.numberOfBids}}</td>
-      <td>{{items.sellerId}}</td>
-      <td>{{items.locationId}}</td>
+      <td>{{items.seller.id}}</td>
+      <td>{{items.seller.sellerRating}}</td>
+      <td>{{items.location.country}}, {{items.location.location}}</td>
     </tr>
   </table>
 
@@ -64,12 +66,12 @@
 
 </div>
 
-<div *ngIf="isLoggedIn && active">
+<div *ngIf="isLoggedIn && active && !isMine">
   <h2>Place Bid:</h2>
 </div>
 
 
-<div *ngIf="isLoggedIn && active">
+<div *ngIf="isLoggedIn && active && !isMine">
   <form [formGroup]="form" (ngSubmit)="addBid()">
     <div>
       <label for="amount">Amount: </label>

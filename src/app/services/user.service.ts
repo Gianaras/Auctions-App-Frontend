@@ -13,6 +13,7 @@ const httpOptions = {
 export class UserService {
 
   private usersUrl ='https://localhost:8443/users';
+  private getUserUrl ='https://localhost:8443/getUserFromUsername';
 
   constructor (private http: HttpClient) { }
 
@@ -22,6 +23,10 @@ export class UserService {
 
   getUser(userId: number): Observable<User> {
     return this.http.get<User>(this.usersUrl+"/"+userId);
+  }
+
+  getUserFromUsername(username: string): Observable<User> {
+    return this.http.get<User>(this.getUserUrl + "/" + username);
   }
 
   addUser(user: User): Observable<any> {
