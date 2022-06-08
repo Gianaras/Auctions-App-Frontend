@@ -75,8 +75,7 @@ export class ItemDetailsComponent implements OnInit {
           this.active = false;
 
         // check if this auction belongs to logged-in user
-        if (this.isLoggedIn)
-          this.isThisMine();
+        this.isThisMine();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -131,10 +130,6 @@ export class ItemDetailsComponent implements OnInit {
 
   // check whether the auction seller is the currently logged-in user
   isThisMine(): void {
-    let userString: string | null = localStorage.getItem('user');
-    if (!userString) return;
-    let myUser: User = JSON.parse(userString);
-
     if (!this.items) return;
     this.loading = true;
 
@@ -145,6 +140,11 @@ export class ItemDetailsComponent implements OnInit {
 
         if (sellerTmp && this.items) {
           this.items.seller = sellerTmp;
+
+          let userString: string | null = localStorage.getItem('user');
+          if (!userString) return;
+          let myUser: User = JSON.parse(userString);
+
           if (this.items.seller.id == myUser.seller.id)
             this.isMine = true;
         }
