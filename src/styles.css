@@ -26,10 +26,10 @@ body {
 }
 
 input[type=text] {
-  margin: 1px 0 15px;
   border: 2px solid black;
   border-radius: 2px;
   padding: 3px;
+  margin: 1px 50px 15px 0;
 }
 
 input[type=password] {
@@ -37,6 +37,14 @@ input[type=password] {
   border: 2px solid black;
   border-radius: 2px;
   padding: 3px;
+}
+
+input[type=number] {
+  margin: 1px 50px 15px 0;
+  border: 2px solid black;
+  border-radius: 2px;
+  padding: 3px;
+  width: 60px;
 }
 
 label{
@@ -53,8 +61,18 @@ button {
   margin-top: 10px;
 }
 
+select {
+  margin-right: 20px;
+  border: 2px solid black;
+  margin-top: 3px;
+}
+
 th {
   background-color: #CC8068;
+}
+
+td {
+  background-color: #777999;
 }
 
 .invisible {

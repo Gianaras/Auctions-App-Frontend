@@ -1,14 +1,46 @@
 <div *ngIf="form">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div>
-      <label for="itemSearch">Search for items: </label>
-      <input id="itemSearch" type="text" formControlName="itemSearch" />
-    </div>
+    <div class="displayTable">
 
-    <div>
-      <b> <button [disabled]="loading">
-        Search
-      </button> </b>
+      <div class="displayTableCell">
+        <label for="itemSearch">Search for items: </label>
+        <input id="itemSearch" type="text" formControlName="itemSearch" />
+      </div>
+
+      <div class="displayTableCell">
+        <label for="maxPrice">Budget:</label>
+        <input id="maxPrice" type="number" min="0" formControlName="maxPrice" />
+      </div>
+
+      <div class="displayTableCell">
+        <label for="locationSearch">Search for location: </label>
+        <input id="locationSearch" type="text" formControlName="locationSearch" />
+      </div>
+
+      <div class="displayTableCell">
+        <label for="selectCategory">Category:</label>
+        <select id="selectCategory" (change)="updateSelectedCategory($event)">
+          <option value="none">None</option>
+          <option value="food">Food</option>
+          <option value="toys">Toys</option>
+          <option value="electronics">Electronics</option>
+          <option value="books">Books</option>
+          <option value="movies">Movies</option>
+          <option value="video games">Video Games</option>
+          <option value="clothing">Clothing</option>
+          <option value="footwear">Footwear</option>
+          <option value="furniture">Furniture</option>
+          <option value="music">Music</option>
+        </select>
+      </div>
+
+      <div class="displayTableCell">
+        <label class="invisible">.</label>
+        <b> <button class="myButton" [disabled]="loading">
+          Search
+        </button> </b>
+      </div>
+
     </div>
   </form>
 </div>
@@ -31,11 +63,13 @@
           <th>Current Bid</th>
           <th>Buy Price</th>
           <th>End Date</th>
+          <th>Location</th>
         </tr>
         <tr>
           <td>{{items.currentBid}}</td>
           <td>{{items.buyPrice}}</td>
           <td>{{items.ends}}</td>
+          <td>{{items.location.country}}, {{items.location.location}}</td>
         </tr>
       </table>
     </div>

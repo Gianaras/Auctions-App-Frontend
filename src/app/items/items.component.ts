@@ -4,7 +4,7 @@ import { Items } from "../model/items";
 import { ItemsService } from "../services/items.service";
 import { ActivatedRoute } from "@angular/router";
 import { User } from "../model/user";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-items',
@@ -17,15 +17,20 @@ export class ItemsComponent implements OnInit {
   finalItems: Items[] = [];
   loaded = false;
   loading = false;
+  selectedCategory: String = "none";
   form: FormGroup;
 
   constructor (private service: ItemsService,
                private route: ActivatedRoute,
                private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      itemSearch: ['']
+      itemSearch: [''],
+      maxPrice: [''],
+      locationSearch: ['']
     });
   }
+
+  get formControls() { return this.form.controls; }
 
   ngOnInit(): void {
     // get the final part of the url path
@@ -56,22 +61,59 @@ export class ItemsComponent implements OnInit {
     }
   }
 
-  // filter items through search
+  // filter items
   onSubmit(): void {
     this.loading = true;
-    this.finalItems = [];
+    let tmpItems: Items[] = [];
 
     // only show auctions that contain at least one item with a name similar to the search
     for (let items of this.allItems) {
       for (let item of items.items) {
         if (item.name.toLowerCase().includes(this.form.value['itemSearch'].toLowerCase())) {
-          this.finalItems.push(items);
+          tmpItems.push(items);
           break;
         }
       }
     }
+    this.finalItems = tmpItems;
+
+    // filter through budget
+    tmpItems = [];
+    if (this.form.value['maxPrice']) {
+      for (let items of this.finalItems)
+        if (Math.max(items.currentBid, items.firstBid) < this.form.value['maxPrice'])
+          tmpItems.push(items);
+      this.finalItems = tmpItems;
+    }
+
+    // filter through location
+    tmpItems = [];
+    for (let items of this.finalItems) {
+      if (items.location.country.toLowerCase().includes(this.form.value['locationSearch'].toLowerCase())
+        || items.location.location.toLowerCase().includes(this.form.value['locationSearch'].toLowerCase()))
+          tmpItems.push(items);
+    }
+    this.finalItems = tmpItems;
+
+    // filter through category
+    tmpItems = [];
+    if (this.selectedCategory != "none") {
+      for (let items of this.finalItems) {
+        for (let category of items.categories)
+          if (category.id === this.selectedCategory) {
+            tmpItems.push(items);
+            break;
+          }
+      }
+      this.finalItems = tmpItems;
+    }
 
     this.loading = false;
+  }
+
+  // update the category selected in dropdown menu
+  updateSelectedCategory(event: any): void {
+    this.selectedCategory = event.target.value;
   }
 
 }

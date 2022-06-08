@@ -6,3 +6,16 @@ th, td {
 li {
   margin-bottom: 45px;
 }
+
+.myButton {
+  margin-left: 20px;
+  margin-top: -10px;
+}
+
+.displayTable {
+  display: table;
+}
+
+.displayTableCell {
+  display: table-cell;
+}
