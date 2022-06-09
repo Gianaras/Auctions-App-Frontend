@@ -1,0 +1,38 @@
+<div>
+  <h1>Message a recent user:</h1>
+</div>
+
+<ol>
+  <li *ngFor='let user of relevantUsers'>
+    <div *ngIf="relevantUsers">
+      <table>
+        <tr>
+          <th>User</th>
+        </tr>
+        <tr>
+          <td>{{user.username}}</td>
+        </tr>
+        <div *ngIf="form">
+          <form [formGroup]="form" (ngSubmit)="onSubmit(user.username)">
+            <div>
+              <label for="msg">Message: </label>
+              <input id="msg" type="text" formControlName="msg" />
+            </div>
+
+            <div>
+              <b> <button>
+                Send Message
+              </button> </b>
+            </div>
+          </form>
+        </div>
+
+      </table>
+      <div>
+
+      </div>
+    </div>
+
+  </li>
+</ol>
+<router-outlet></router-outlet>
