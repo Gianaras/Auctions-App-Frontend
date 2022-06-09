@@ -18,6 +18,10 @@ import { ItemDetailsComponent } from "./item-details/item-details.component";
 import { ItemsService } from "./services/items.service";
 import { AddItemsComponent } from "./add-items/add-items.component";
 import { LoginGuard } from "./guards/login.guard";
+import {InboxComponent} from "./messages/inbox/inbox.component";
+import {SendMessageComponent} from "./messages/send/send.component";
+import {MessageComponent} from "./messages/messages/message.component";
+
 
 const appRoutes: Routes = [
   { path: 'users', canActivate: [AuthGuard], children: [
@@ -25,7 +29,11 @@ const appRoutes: Routes = [
       { path: ':id', component: UserDetailsComponent}
     ]
   },
-
+  {path:'messages',component: MessageComponent,children:[
+      {path:'send',component: SendMessageComponent },
+      {path: 'inbox',component: InboxComponent }
+    ]
+  },
   { path: 'login', component: LoginComponent },
 
   { path: 'register', component: RegisterComponent },
@@ -47,6 +55,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent, UserComponent, UserDetailsComponent, RegisterComponent,
     LoginComponent, ItemsComponent, ItemDetailsComponent, AddItemsComponent,
+    InboxComponent,SendMessageComponent,MessageComponent,
   ],
     imports: [
         BrowserModule, FormsModule, HttpClientModule,

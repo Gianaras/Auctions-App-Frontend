@@ -1,0 +1,22 @@
+<div>
+  <h1>Inbox:</h1>
+</div>
+
+<ol>
+  <li *ngFor='let message of messages'>
+    <div *ngIf="messages">
+      <table>
+        <tr>
+          <th>From</th>
+          <th>Message</th>
+        </tr>
+        <tr>
+          <td>{{message.sender}}</td>
+          <td>{{message.content}}</td>
+        </tr>
+      </table>
+    </div>
+
+  </li>
+</ol>
+<router-outlet></router-outlet>
