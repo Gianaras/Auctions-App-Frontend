@@ -5,7 +5,7 @@ import {Category} from "./category";
 import {Location} from "./location"
 
 export class Items {
-  id: number;
+  id: number | undefined;
   items: Item[] = [];
   bids: Bid[] =[];
   categories: Category[] = [];
@@ -20,16 +20,21 @@ export class Items {
   seller: Seller;
   location: Location;
 
-  constructor(id: number, currentBid: number, buyPrice: number, firstBid: number, numberOfBids: number,
-              started: number, ends: number, seller: Seller, location: Location) {
-    this.id = id;
+  constructor(currentBid: number, buyPrice: number, firstBid: number, numberOfBids: number,
+              started: number, ends: number, seller: Seller, location: Location, categories: Category[],
+              items: Item[]) {
     this.currentBid = currentBid;
     this.buyPrice = buyPrice;
     this.firstBid = firstBid;
     this.numberOfBids = numberOfBids;
-    this.startedUTC = started;
-    this.endsUTC = ends;
     this.seller = seller;
     this.location = location;
+    this.categories = categories;
+    this.items = items;
+
+    this.startedUTC = started;
+    this.endsUTC = ends;
+    this.started.setTime(started);
+    this.ends.setTime(ends);
   }
 }

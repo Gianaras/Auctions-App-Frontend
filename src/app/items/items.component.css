@@ -12,6 +12,16 @@ li {
   margin-top: -10px;
 }
 
+.myButton2 {
+  margin-left: 20px;
+  margin-top: -10px;
+  margin-bottom: 60px;
+}
+
+.leftMargin {
+  margin-left: 20px;
+}
+
 .displayTable {
   display: table;
 }

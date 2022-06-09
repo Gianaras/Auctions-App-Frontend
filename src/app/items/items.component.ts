@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from "@angular/common/http";
 import { Items } from "../model/items";
 import { ItemsService } from "../services/items.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { User } from "../model/user";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-items',
@@ -19,10 +19,12 @@ export class ItemsComponent implements OnInit {
   loading = false;
   selectedCategory: String = "none";
   form: FormGroup;
+  isMyItems: boolean = false;
 
   constructor (private service: ItemsService,
                private route: ActivatedRoute,
-               private formBuilder: FormBuilder) {
+               private formBuilder: FormBuilder,
+               private router: Router) {
     this.form = this.formBuilder.group({
       itemSearch: [''],
       maxPrice: [''],
@@ -38,6 +40,7 @@ export class ItemsComponent implements OnInit {
 
     // If we are on /myItems, get only items belonging to user
     if (this.route.parent.snapshot.url[0].path === "myItems") {
+      this.isMyItems = true;
       let userString: string | null = localStorage.getItem('user');
       if (!userString) return;
       let myUser: User = JSON.parse(userString);
@@ -114,6 +117,11 @@ export class ItemsComponent implements OnInit {
   // update the category selected in dropdown menu
   updateSelectedCategory(event: any): void {
     this.selectedCategory = event.target.value;
+  }
+
+  // route to new auction page
+  reroute(): void {
+    this.router.navigate(['/myItems/add']);
   }
 
 }

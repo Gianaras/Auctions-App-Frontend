@@ -88,7 +88,7 @@ export class ItemDetailsComponent implements OnInit {
 
     // get username
     let username = localStorage.getItem('username');
-    if (!this.items || !username) return;
+    if (!this.items || !username || !this.items.id) return;
 
     // check if bid amount is valid
     let value = this.formControls['amount'].value;
@@ -130,7 +130,7 @@ export class ItemDetailsComponent implements OnInit {
 
   // check whether the auction seller is the currently logged-in user
   isThisMine(): void {
-    if (!this.items) return;
+    if (!this.items || !this.items.id) return;
     this.loading = true;
 
     this.service.getSellerFromItems(this.items.id).subscribe(

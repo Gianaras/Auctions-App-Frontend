@@ -1,15 +1,18 @@
+import {User} from "./user";
+
 export class Location {
-  id: number;
+  id: number | undefined;
   country: string;
   longitude: string;
   latitude: string;
   location: string;
+  user: User;
 
-  constructor(id: number, country: string, longitude: string, latitude: string, location: string) {
-    this.id = id;
+  constructor(country: string, longitude: string, latitude: string, location: string, user: User) {
     this.country = country;
     this.longitude = longitude;
     this.latitude = latitude;
     this.location = location;
+    this.user = user;
   }
 }

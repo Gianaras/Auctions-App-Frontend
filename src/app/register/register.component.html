@@ -1,5 +1,6 @@
 <div *ngIf="form">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
     <div>
       <label for="username">Username: </label>
       <input id="username" type="text" formControlName="username" />
@@ -85,8 +86,8 @@
       <b> <button [disabled]="loading">
         Register
       </button> </b>
-      <a routerLink="..">Cancel</a>
     </div>
+
   </form>
 </div>
 

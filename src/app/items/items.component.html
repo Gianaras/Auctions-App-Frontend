@@ -1,10 +1,24 @@
+<div *ngIf="isMyItems">
+  <h2>Start New Auction:</h2>
+</div>
+
+<div *ngIf="isMyItems">
+  <b> <button class="myButton2" (click)="reroute()" [disabled]="loading || !isMyItems">
+    Start New Auction
+  </button> </b>
+</div>
+
+<div *ngIf="isMyItems">
+  <h2>Manage Your Auctions:</h2>
+</div>
+
 <div *ngIf="form">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="displayTable">
 
       <div class="displayTableCell">
-        <label for="itemSearch">Search for items: </label>
-        <input id="itemSearch" type="text" formControlName="itemSearch" />
+        <label class="leftMargin" for="itemSearch">Search for items: </label>
+        <input class="leftMargin" id="itemSearch" type="text" formControlName="itemSearch" />
       </div>
 
       <div class="displayTableCell">

@@ -1,13 +1,11 @@
 export class Item {
-  id: number;
+  id: number | undefined;
   name: string;
   description: string;
-  itemsId: number;
+  itemsId: number | undefined;
 
-  constructor(id: number, name: string, description: string, itemsId: number) {
-    this.id = id;
+  constructor(name: string, description: string) {
     this.name = name;
     this.description = description;
-    this.itemsId = itemsId;
   }
 }

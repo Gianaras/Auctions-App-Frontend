@@ -1,1 +1,143 @@
-<p>add-items works!</p>
+<div *ngIf="form">
+  <form [formGroup]="form" (ngSubmit)="onFinalSubmit()">
+
+    <div>
+      <h2>Items:</h2>
+    </div>
+
+    <div *ngIf="items">
+      <div *ngFor='let item of items'>
+        <div *ngIf="item">
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>{{item.name}}</td>
+              <td>{{item.description}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h3>Add an Item:</h3>
+    </div>
+
+    <div>
+      <form #myForm="ngForm" [formGroup]="itemForm" (ngSubmit)="onItemSubmit(myForm)">
+
+        <div>
+          <label for="name">Name: </label>
+          <input id="name" type="text" formControlName="name" />
+          <div *ngIf="itemSubmitted && itemFormControls['name'].errors">
+            <b> <div *ngIf="itemFormControls['name'].errors['required']">Name is required.</div> </b>
+          </div>
+        </div>
+
+        <div>
+          <label for="description">Description: </label>
+          <input id="description" type="text" formControlName="description" />
+          <div *ngIf="itemSubmitted && itemFormControls['description'].errors">
+            <b> <div *ngIf="itemFormControls['description'].errors['required']">Description is required.</div> </b>
+          </div>
+        </div>
+
+        <b> <button class="myButton" [disabled]="addingItem">
+          Add Item
+        </button> </b>
+
+      </form>
+    </div>
+
+    <div>
+      <h2>Choose categories:</h2>
+    </div>
+
+    <table>
+      <tr>
+        <th *ngFor="let category of categories">
+          <label for="{{category.id}}">{{category.id}}:</label>
+        </th>
+      </tr>
+      <tr>
+        <th class="myTh" *ngFor="let category of categories">
+          <input id="{{category.id}}" [value]="category.id" type="checkbox" (change)="onCheckbox(category.id, $event)" />
+        </th>
+      </tr>
+    </table>
+
+    <div>
+      <h2>General Information:</h2>
+    </div>
+
+    <div>
+      <label for="buyPrice">Buy Price: </label>
+      <input id="buyPrice" type="number" min="0" formControlName="buyPrice" />
+      <div *ngIf="submitted && formControls['buyPrice'].errors">
+        <b> <div *ngIf="formControls['buyPrice'].errors['required']">Buy price is required.</div> </b>
+        <b> <div *ngIf="formControls['buyPrice'].errors['min']">Buy price must be above 0.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="firstBid">First Bid: </label>
+      <input id="firstBid" type="number" min="0" formControlName="firstBid" />
+      <div *ngIf="submitted && formControls['firstBid'].errors">
+        <b> <div *ngIf="formControls['firstBid'].errors['required']">First bid is required.</div> </b>
+        <b> <div *ngIf="formControls['firstBid'].errors['min']">First bid must be above 0.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="endDate">End Date: </label>
+      <input id="endDate" type="date" formControlName="endDate" />
+      <div *ngIf="submitted && formControls['endDate'].errors">
+        <b> <div *ngIf="formControls['endDate'].errors['required']">End date is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <h2>Location Information:</h2>
+    </div>
+
+    <div>
+      <label for="country">Country: </label>
+      <input id="country" type="text" formControlName="country" />
+      <div *ngIf="submitted && formControls['country'].errors">
+        <b> <div *ngIf="formControls['country'].errors['required']">Country is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="location">Location: </label>
+      <input id="location" type="text" formControlName="location" />
+      <div *ngIf="submitted && formControls['location'].errors">
+        <b> <div *ngIf="formControls['location'].errors['required']">Location is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="longitude">Longitude: </label>
+      <input id="longitude" type="text" formControlName="longitude" />
+      <div *ngIf="submitted && formControls['longitude'].errors">
+        <b> <div *ngIf="formControls['longitude'].errors['required']">Longitude is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="latitude">Latitude: </label>
+      <input id="latitude" type="text" formControlName="latitude" />
+      <div *ngIf="submitted && formControls['latitude'].errors">
+        <b> <div *ngIf="formControls['latitude'].errors['required']">Latitude is required.</div> </b>
+      </div>
+    </div>
+
+    <b> <button [disabled]="addingAuction">
+      Create Auction
+    </button> </b>
+
+  </form>
+</div>
