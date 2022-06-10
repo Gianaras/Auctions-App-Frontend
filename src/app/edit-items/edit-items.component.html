@@ -1,3 +1,5 @@
+<h2>Edit Auction:</h2>
+
 <div *ngIf="form">
   <form [formGroup]="form" (ngSubmit)="onFinalSubmit()">
 
@@ -59,7 +61,7 @@
     </div>
 
     <div>
-      <h2>Choose categories:</h2>
+      <h2>Choose NEW categories:</h2>
     </div>
 
     <table>
@@ -80,29 +82,33 @@
     </div>
 
     <div>
-      <label for="buyPrice">Buy Price: </label>
+      <div *ngIf="initialAuction">
+        Old Buy Price: {{initialAuction.buyPrice}}
+      </div>
+      <label for="buyPrice">New Buy Price (Optional):</label>
       <input id="buyPrice" type="number" min="0" formControlName="buyPrice" />
       <div *ngIf="submitted && formControls['buyPrice'].errors">
-        <b> <div *ngIf="formControls['buyPrice'].errors['required']">Buy price is required.</div> </b>
         <b> <div *ngIf="formControls['buyPrice'].errors['min']">Buy price must be above 0.</div> </b>
       </div>
     </div>
 
     <div>
-      <label for="firstBid">First Bid: </label>
+      <div *ngIf="initialAuction">
+        Old First Bid: {{initialAuction.firstBid}}
+      </div>
+      <label for="firstBid">New First Bid (Optional): </label>
       <input id="firstBid" type="number" min="0" formControlName="firstBid" />
       <div *ngIf="submitted && formControls['firstBid'].errors">
-        <b> <div *ngIf="formControls['firstBid'].errors['required']">First bid is required.</div> </b>
         <b> <div *ngIf="formControls['firstBid'].errors['min']">First bid must be above 0.</div> </b>
       </div>
     </div>
 
     <div>
-      <label for="endDate">End Date: </label>
-      <input id="endDate" type="date" formControlName="endDate" />
-      <div *ngIf="submitted && formControls['endDate'].errors">
-        <b> <div *ngIf="formControls['endDate'].errors['required']">End date is required.</div> </b>
+      <div *ngIf="initialAuction">
+        Old End Date: {{initialAuction.ends}}
       </div>
+      <label for="endDate">New End Date (Optional): </label>
+      <input id="endDate" type="date" formControlName="endDate" />
     </div>
 
     <div>
@@ -110,39 +116,39 @@
     </div>
 
     <div>
-      <label for="country">Country: </label>
+      <div *ngIf="initialAuction">
+        Old Country: {{initialAuction.location.country}}
+      </div>
+      <label for="country">New Country (Optional): </label>
       <input id="country" type="text" formControlName="country" />
-      <div *ngIf="submitted && formControls['country'].errors">
-        <b> <div *ngIf="formControls['country'].errors['required']">Country is required.</div> </b>
-      </div>
     </div>
 
     <div>
-      <label for="location">Location: </label>
+      <div *ngIf="initialAuction">
+        Old Location: {{initialAuction.location.location}}
+      </div>
+      <label for="location">New Location (Optional): </label>
       <input id="location" type="text" formControlName="location" />
-      <div *ngIf="submitted && formControls['location'].errors">
-        <b> <div *ngIf="formControls['location'].errors['required']">Location is required.</div> </b>
-      </div>
     </div>
 
     <div>
-      <label for="longitude">Longitude: </label>
+      <div *ngIf="initialAuction">
+        Old Longitude: {{initialAuction.location.longitude}}
+      </div>
+      <label for="longitude">New Longitude (Optional): </label>
       <input id="longitude" type="text" formControlName="longitude" />
-      <div *ngIf="submitted && formControls['longitude'].errors">
-        <b> <div *ngIf="formControls['longitude'].errors['required']">Longitude is required.</div> </b>
-      </div>
     </div>
 
     <div>
-      <label for="latitude">Latitude: </label>
-      <input id="latitude" type="text" formControlName="latitude" />
-      <div *ngIf="submitted && formControls['latitude'].errors">
-        <b> <div *ngIf="formControls['latitude'].errors['required']">Latitude is required.</div> </b>
+      <div *ngIf="initialAuction">
+        Old Latitude: {{initialAuction.location.latitude}}
       </div>
+      <label for="latitude">New Latitude (Optional): </label>
+      <input id="latitude" type="text" formControlName="latitude" />
     </div>
 
     <b> <button [disabled]="addingAuction">
-      Create Auction
+      Update Auction
     </button> </b>
 
   </form>

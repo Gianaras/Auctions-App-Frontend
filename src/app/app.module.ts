@@ -21,6 +21,7 @@ import { LoginGuard } from "./guards/login.guard";
 import {InboxComponent} from "./messages/inbox/inbox.component";
 import {SendMessageComponent} from "./messages/send/send.component";
 import {MessageComponent} from "./messages/messages/message.component";
+import { EditItemsComponent } from './edit-items/edit-items.component';
 
 
 const appRoutes: Routes = [
@@ -29,9 +30,9 @@ const appRoutes: Routes = [
       { path: ':id', component: UserDetailsComponent}
     ]
   },
-  {path:'messages',component: MessageComponent,children:[
-      {path:'send',component: SendMessageComponent },
-      {path: 'inbox',component: InboxComponent }
+  { path:'messages', canActivate: [LoginGuard], component: MessageComponent, children: [
+      { path:'send', component: SendMessageComponent },
+      { path: 'inbox', component: InboxComponent }
     ]
   },
   { path: 'login', component: LoginComponent },
@@ -40,12 +41,13 @@ const appRoutes: Routes = [
 
   { path: 'items', children: [
       { path: '', component: ItemsComponent },
-      { path: ':id', component: ItemDetailsComponent }
+      { path: ':id', component: ItemDetailsComponent },
+      { path: ':id/edit', canActivate: [LoginGuard], component: EditItemsComponent }
     ]
   },
 
-  { path: 'myItems', children: [
-      { path: '', canActivate: [LoginGuard], component: ItemsComponent },
+  { path: 'myItems', canActivate: [LoginGuard], children: [
+      { path: '', component: ItemsComponent },
       { path: 'add', component: AddItemsComponent }
     ]
   }
@@ -55,7 +57,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent, UserComponent, UserDetailsComponent, RegisterComponent,
     LoginComponent, ItemsComponent, ItemDetailsComponent, AddItemsComponent,
-    InboxComponent,SendMessageComponent,MessageComponent,
+    InboxComponent,SendMessageComponent,MessageComponent, EditItemsComponent,
   ],
     imports: [
         BrowserModule, FormsModule, HttpClientModule,

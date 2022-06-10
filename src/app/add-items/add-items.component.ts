@@ -53,6 +53,7 @@ export class AddItemsComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  // triggers when we click on a checkbox for categories
   onCheckbox(categoryName: string, event: any): void {
     if (event.target.checked) this.finalCategories.push(new Category(categoryName));
     else {
@@ -61,6 +62,7 @@ export class AddItemsComponent implements OnInit {
     }
   }
 
+  // triggers when we add an item to the auction
   onItemSubmit(form: FormGroupDirective): void {
     this.itemSubmitted = true;
     if (this.itemForm.invalid) return;
@@ -73,6 +75,17 @@ export class AddItemsComponent implements OnInit {
     this.itemSubmitted = false;
   }
 
+  // removes item from the auction
+  removeItem(name: string, description: string): void {
+    for (let i=0; i<this.items.length; i++) {
+      if (this.items[i].name == name && this.items[i].description == description) {
+        this.items.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  // creates the auction
   onFinalSubmit(): void {
     this.submitted = true;
 

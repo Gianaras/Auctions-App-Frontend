@@ -1,0 +1,14 @@
+.myButton {
+  margin-bottom: 40px;
+}
+
+th, td {
+  border: 2px solid;
+  padding: 10px;
+}
+
+.myTh {
+  border: 2px solid;
+  padding: 10px;
+  background-color: #777999;
+}

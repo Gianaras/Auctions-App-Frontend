@@ -16,12 +16,15 @@ export class ItemDetailsComponent implements OnInit {
 
   form: FormGroup;
   items: Items | undefined;
+  canDelete = true;
   isDeleting = false;
   loading = false;
   isLoggedIn = false;
   isMine = false; // whether the auction seller is the currently logged-in user
   submitted = false;
   active = true;
+  loaded = false; // only becomes true after we have resolved if this auction belongs to logged-in user
+                  // (prevents bid placing and delete option showing during loading)
 
   constructor(private route: ActivatedRoute,
               private service: ItemsService,
@@ -147,6 +150,7 @@ export class ItemDetailsComponent implements OnInit {
 
           if (this.items.seller.id == myUser.seller.id)
             this.isMine = true;
+          this.loaded = true;
         }
       },
       error => {
@@ -154,6 +158,43 @@ export class ItemDetailsComponent implements OnInit {
         this.loading = false;
       }
     );
+  }
+
+  // delete Auction
+  deleteItems(): void {
+    this.getItems(); // refresh items to make sure no new bid has been placed
+    if (!this.items || !this.items.id) return;
+
+    // check if auction is active
+    if (!this.active) {
+      this.canDelete = false;
+      alert("This auction cannot be deleted since it is no longer active.");
+      return;
+    }
+
+    // check for bids
+    if (this.items.bids && this.items.bids.length > 0) {
+      this.canDelete = false;
+      alert("This auction cannot be deleted since one or more bids have been placed.");
+      return;
+    }
+
+    this.isDeleting = true;
+    this.service.deleteItems(this.items.id).subscribe(
+      () => {
+        alert("Deletion successful!");
+        this.router.navigate(['..'], { relativeTo: this.route });
+      },
+      error => {
+        alert(error.message);
+        this.isDeleting = false;
+      }
+    );
+  }
+
+  // go to edit page
+  routeToEdit(): void {
+    this.router.navigate(['edit'], { relativeTo: this.route });
   }
 
 }

@@ -66,12 +66,12 @@
 
 </div>
 
-<div *ngIf="isLoggedIn && active && !isMine">
+<div *ngIf="isLoggedIn && active && !isMine && loaded">
   <h2>Place Bid:</h2>
 </div>
 
 
-<div *ngIf="isLoggedIn && active && !isMine">
+<div *ngIf="isLoggedIn && active && !isMine && loaded">
   <form [formGroup]="form" (ngSubmit)="addBid()">
     <div>
       <label for="amount">Amount: </label>
@@ -115,8 +115,19 @@
   </div>
 </div>
 
-<!--Scuffed way to add some bottom margin-->
-<div *ngIf="items && items.bids && items.bids.length > 0">
-  <button class="invisible"></button>
+
+<div *ngIf="isLoggedIn && active && isMine && loaded && items && canDelete">
+  <h2>Manage Auction:</h2>
+
+  <div>
+    <b> <button [disabled]="loading" (click)="routeToEdit()">
+      Edit Auction
+    </button> </b>
+
+    <b> <button [disabled]="loading || isDeleting" (click)="deleteItems()">
+      Delete Auction
+    </button> </b>
+  </div>
+
 </div>
 

@@ -44,6 +44,10 @@ export class ItemsService {
     return this.http.post(this.itemsUrl+"/"+itemsId, new Bid(amount, bidderName));
   }
 
+  updateItems(items: Items, itemsId: number): Observable<any> {
+    return this.http.put(this.itemsUrl+"/"+itemsId, items);
+  }
+
   deleteItems(itemsId: number): Observable<any> {
     return this.http.delete(this.itemsUrl+"/"+itemsId);
   }
