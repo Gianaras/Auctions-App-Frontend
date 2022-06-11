@@ -6,6 +6,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {User} from "../model/user";
 import {Seller} from "../model/seller";
+import {toBase64String} from "@angular/compiler/src/output/source_map";
 
 @Component({
   selector: 'app-item-details',
@@ -13,6 +14,9 @@ import {Seller} from "../model/seller";
   styleUrls: ['./item-details.component.css']
 })
 export class ItemDetailsComponent implements OnInit {
+
+  images:any = [];
+
 
   form: FormGroup;
   items: Items | undefined;
@@ -39,7 +43,6 @@ export class ItemDetailsComponent implements OnInit {
     if (localStorage.getItem('token')) this.isLoggedIn = true;
     this.getItems();
   }
-
   get formControls() { return this.form.controls; }
 
   getItems(): void {
@@ -54,6 +57,15 @@ export class ItemDetailsComponent implements OnInit {
     this.service.getItems(+id).subscribe(
       (response: Items) => {
         this.items = response;
+        for(let item of this.items.items){
+          for(let image of item.images){
+            console.log(image.image_data);
+            let img = image.image_data;
+            this.images.push(img);
+          }
+        }
+
+
 
         // convert UTC times to typescript dates
         this.items.started = new Date();
@@ -195,6 +207,35 @@ export class ItemDetailsComponent implements OnInit {
   // go to edit page
   routeToEdit(): void {
     this.router.navigate(['edit'], { relativeTo: this.route });
+  }
+
+  fromBinary(encoded:string) {
+    const binary = atob(encoded);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return String.fromCharCode(...new Uint16Array(bytes.buffer));
+  }
+
+
+  toBinary(string:string) {
+    const codeUnits = new Uint16Array(string.length);
+    for (let i = 0; i < codeUnits.length; i++) {
+      codeUnits[i] = string.charCodeAt(i);
+    }
+    return btoa(String.fromCharCode(...new Uint8Array(codeUnits.buffer)));
+  }
+
+
+
+  base64encode(str:string) {
+    let encode = encodeURIComponent(str).replace(/%([a-f0-9]{2})/gi, (m, $1) => String.fromCharCode(parseInt($1, 16)))
+    return btoa(encode)
+  }
+  base64decode(str:string) {
+    let decode = atob(str).replace(/[\x80-\uffff]/g, (m) => `%${m.charCodeAt(0).toString(16).padStart(2, '0')}`)
+    return decodeURIComponent(decode)
   }
 
 }
