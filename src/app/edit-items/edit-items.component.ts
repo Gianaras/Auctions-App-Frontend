@@ -29,6 +29,7 @@ export class EditItemsComponent implements OnInit {
   itemSubmitted: boolean = false;
   addingItem: boolean = false;
   addingAuction: boolean = false;
+  canEdit: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
               private itemsService: ItemsService,
@@ -68,6 +69,14 @@ export class EditItemsComponent implements OnInit {
         this.initialAuction.ends.setTime(this.initialAuction.endsUTC);
 
         this.items = this.initialAuction.items;
+
+        // check if this auction can be edited (it must have no bids and be active)
+        let now: Date = new Date();
+        let active: boolean = true;
+        if ((now > this.initialAuction.ends) || (this.initialAuction.currentBid >= this.initialAuction.buyPrice))
+          active = false;
+
+        this.canEdit = !(!active || (this.initialAuction.bids && this.initialAuction.bids.length > 0));
       },
       (error: HttpErrorResponse) => { alert(error.message); }
     );
@@ -108,6 +117,7 @@ export class EditItemsComponent implements OnInit {
   // updates the auction
   onFinalSubmit(): void {
     if (!this.initialAuction) return;
+    if (!this.canEdit) { alert("This auction has bids. It can no longer be updated."); return; }
     this.submitted = true;
 
     // get all the final values for the edited auction. For each field, check if it was changed during edit,

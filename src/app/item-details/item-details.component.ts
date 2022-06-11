@@ -79,6 +79,9 @@ export class ItemDetailsComponent implements OnInit {
 
         // check if this auction belongs to logged-in user
         this.isThisMine();
+
+        // check if this auction can be deleted/edited (it must have no bids and be active)
+        if (!this.active || (this.items.bids && this.items.bids.length > 0)) this.canDelete = false;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
