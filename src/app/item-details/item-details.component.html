@@ -131,3 +131,8 @@
 
 </div>
 
+<!--scuffed way to add bottom margin-->
+<div *ngIf="!(isLoggedIn && active && isMine && loaded && items && canDelete)">
+  <b> <button class="invisible"></button> </b>
+</div>
+

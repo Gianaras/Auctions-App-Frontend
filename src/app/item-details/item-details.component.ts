@@ -87,48 +87,50 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   addBid(): void {
-    this.submitted = true;
+    if (confirm("Are you sure you want to place this bid? This action cannot be reverted.")) {
+      this.submitted = true;
 
-    // get username
-    let username = localStorage.getItem('username');
-    if (!this.items || !username || !this.items.id) return;
+      // get username
+      let username = localStorage.getItem('username');
+      if (!this.items || !username || !this.items.id) return;
 
-    // check if bid amount is valid
-    let value = this.formControls['amount'].value;
-    if (value <= this.items.currentBid || value < this.items.firstBid) {
-      alert("Your bid must be higher than the current bid. If this is the first bid, it should be higher than" +
-        " the minimum first bid amount set by the seller (check auction details)");
-      return;
-    }
-
-    // check if auction has run out of time
-    let now: Date = new Date();
-    if ((now > this.items.ends) || (this.items.currentBid >= this.items.buyPrice)) {
-      alert("This auction is no longer available. It has either expired or the items have been bought already.");
-      return;
-    }
-
-    this.loading = true;
-
-    this.service.addBid(this.items.id, value, username).subscribe(
-      () => {
-        alert("Bid Placed!");
-        this.loading = false;
-      },
-      error => {
-        alert(error.message);
-        this.loading = false;
+      // check if bid amount is valid
+      let value = this.formControls['amount'].value;
+      if (value <= this.items.currentBid || value < this.items.firstBid) {
+        alert("Your bid must be higher than the current bid. If this is the first bid, it should be higher than" +
+          " the minimum first bid amount set by the seller (check auction details)");
+        return;
       }
-    );
 
-    // check if bid amount is above buy price
-    if (value >= this.items.buyPrice) {
-      alert("Congratulations! Your bid was higher than the buy price. You will be able to speak to the seller shortly.");
-      this.active = false;
+      // check if auction has run out of time
+      let now: Date = new Date();
+      if ((now > this.items.ends) || (this.items.currentBid >= this.items.buyPrice)) {
+        alert("This auction is no longer available. It has either expired or the items have been bought already.");
+        return;
+      }
+
+      this.loading = true;
+
+      this.service.addBid(this.items.id, value, username).subscribe(
+        () => {
+          alert("Bid Placed!");
+          this.loading = false;
+        },
+        error => {
+          alert(error.message);
+          this.loading = false;
+        }
+      );
+
+      // check if bid amount is above buy price
+      if (value >= this.items.buyPrice) {
+        alert("Congratulations! Your bid was higher than the buy price. You will be able to speak to the seller shortly.");
+        this.active = false;
+      }
+
+      // refresh
+      this.getItems();
     }
-
-    // refresh
-    this.getItems();
   }
 
   // check whether the auction seller is the currently logged-in user
