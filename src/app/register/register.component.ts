@@ -46,19 +46,34 @@ export class RegisterComponent implements OnInit {
     if (this.form.invalid || this.passwordMismatch) return;
     this.loading = true;
 
-    let user = new User(this.form.value['username'], this.form.value['password'], this.form.value['firstName'],
-      this.form.value['lastName'], this.form.value['email'], this.form.value['phone'], this.form.value['address'],
-      this.form.value['country'], this.form.value['city'], new Seller(-1, -1));
+    // check if username already exists
+    this.service.userExists(this.form.value['username']).subscribe(
+      (usernameExists: boolean) => {
 
-    this.service.addUser(user).subscribe(
-      () => {
-        alert("Registration successful!");
-        this.router.navigate(['/login'], { relativeTo: this.route });
-      },
-      error => {
-        alert(error.message);
-        this.loading = false;
-      }
+          if (usernameExists) {
+            alert("Username already exists. Please try again.");
+            this.loading = false;
+            return;
+          }
+
+          // if username does not exist, add user
+          let user = new User(this.form.value['username'], this.form.value['password'], this.form.value['firstName'],
+            this.form.value['lastName'], this.form.value['email'], this.form.value['phone'], this.form.value['address'],
+            this.form.value['country'], this.form.value['city'], new Seller(-1, -1));
+
+          this.service.addUser(user).subscribe(
+            () => {
+              alert("Registration successful!");
+              this.router.navigate(['/login'], { relativeTo: this.route });
+            },
+            error => {
+              alert(error.message);
+              this.loading = false;
+            }
+          );
+
+        },
+      error => { alert(error.message); }
     );
   }
 

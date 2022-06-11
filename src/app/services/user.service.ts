@@ -14,11 +14,16 @@ export class UserService {
 
   private usersUrl ='https://localhost:8443/users';
   private getUserUrl ='https://localhost:8443/getUserFromUsername';
+  private userExistsUrl ='https://localhost:8443/userExists';
 
   constructor (private http: HttpClient) { }
 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.usersUrl);
+  }
+
+  userExists(username: string): Observable<boolean> {
+    return this.http.get<boolean>(this.userExistsUrl+"/"+username);
   }
 
   getUser(userId: number): Observable<User> {
