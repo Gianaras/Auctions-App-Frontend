@@ -59,14 +59,6 @@
     </div>
 
     <div>
-      <label for="address">Address: </label>
-      <input id="address" type="text" formControlName="address" />
-      <div *ngIf="submitted && formControls['address'].errors">
-        <b> <div *ngIf="formControls['address'].errors['required']">Address is required.</div> </b>
-      </div>
-    </div>
-
-    <div>
       <label for="country">Country: </label>
       <input id="country" type="text" formControlName="country" />
       <div *ngIf="submitted && formControls['country'].errors">
@@ -75,10 +67,26 @@
     </div>
 
     <div>
-      <label for="city">City: </label>
-      <input id="city" type="text" formControlName="city" />
-      <div *ngIf="submitted && formControls['city'].errors">
-        <b> <div *ngIf="formControls['city'].errors['required']">City is required.</div> </b>
+      <label for="location">Location: </label>
+      <input id="location" type="text" formControlName="location" />
+      <div *ngIf="submitted && formControls['location'].errors">
+        <b> <div *ngIf="formControls['location'].errors['required']">Location is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="longitude">Longitude: </label>
+      <input id="longitude" type="text" formControlName="longitude" />
+      <div *ngIf="submitted && formControls['longitude'].errors">
+        <b> <div *ngIf="formControls['longitude'].errors['required']">Longitude is required.</div> </b>
+      </div>
+    </div>
+
+    <div>
+      <label for="latitude">Latitude: </label>
+      <input id="latitude" type="text" formControlName="latitude" />
+      <div *ngIf="submitted && formControls['latitude'].errors">
+        <b> <div *ngIf="formControls['latitude'].errors['required']">Latitude is required.</div> </b>
       </div>
     </div>
 

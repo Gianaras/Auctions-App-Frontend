@@ -120,7 +120,7 @@ export class AddItemsComponent implements OnInit {
 
     // get location
     let location: Location = new Location(this.form.value['country'], this.form.value['longitude'],
-      this.form.value['latitude'], this.form.value['location'], myUser);
+      this.form.value['latitude'], this.form.value['location']);
 
     // add auction
     let items: Items = new Items(0, this.form.value['buyPrice'], this.form.value['firstBid'],

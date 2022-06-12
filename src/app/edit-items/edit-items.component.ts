@@ -168,7 +168,7 @@ export class EditItemsComponent implements OnInit {
 
     // get location
     let location: Location = new Location(finalCountry, finalLongitude,
-      finalLatitude, finalLocation, myUser);
+      finalLatitude, finalLocation);
 
     // remove ids from item list (they mess up the request)
     for (let item of this.items) item.id = undefined;
