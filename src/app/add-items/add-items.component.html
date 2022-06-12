@@ -13,10 +13,16 @@
             <tr>
               <th>Name</th>
               <th>Description</th>
+              <th>Images</th>
             </tr>
             <tr>
               <td>{{item.name}}</td>
               <td>{{item.description}}</td>
+              <td><div *ngFor="let image of item.images">
+                <div *ngIf="image">
+                  {{image.image_name}}
+                </div>
+              </div> </td>
             </tr>
           </table>
 
@@ -34,7 +40,6 @@
 
     <div>
       <form #myForm="ngForm" [formGroup]="itemForm" (ngSubmit)="onItemSubmit(myForm)">
-
         <div>
           <label for="name">Name: </label>
           <input id="name" type="text" formControlName="name" />
@@ -50,13 +55,26 @@
             <b> <div *ngIf="itemFormControls['description'].errors['required']">Description is required.</div> </b>
           </div>
         </div>
-
         <b> <button class="myButton" [disabled]="addingItem">
           Add Item
         </button> </b>
 
       </form>
+
+      <div class="text-center">
+        <input class="form-control" type="file"
+               (change)="onChange($event)">
+
+        <button (click)="onUpload()"
+                class="btn btn-success">
+          Upload
+        </button>
+      </div>
+
+
+
     </div>
+
 
     <div>
       <h2>Choose categories:</h2>

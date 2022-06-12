@@ -8,6 +8,7 @@ import {Location} from "../model/location";
 import {Category} from "../model/category";
 import {ItemsService} from "../services/items.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Image} from "../model/image";
 
 @Component({
   selector: 'app-add-items',
@@ -27,6 +28,11 @@ export class AddItemsComponent implements OnInit {
   itemSubmitted: boolean = false;
   addingItem: boolean = false;
   addingAuction: boolean = false;
+
+  file: File | any = null;
+  newItem: Item | any = null;
+  itemImages: string[] = [];
+  imageNames:string[]=[];
 
   constructor(private formBuilder: FormBuilder,
               private itemsService: ItemsService,
@@ -68,11 +74,18 @@ export class AddItemsComponent implements OnInit {
     if (this.itemForm.invalid) return;
 
     this.addingItem = true;
-    this.items.push(new Item(this.itemForm.value['name'], this.itemForm.value['description']));
+    this.newItem = new Item(this.itemForm.value['name'], this.itemForm.value['description']);
+
+    for(let i=0 ; i < this.itemImages.length ;i++){
+      this.newItem.images.push(new Image(this.itemImages[i],this.imageNames[i]));
+      this.items.push(this.newItem);
+    }
     form.resetForm();
 
     this.addingItem = false;
     this.itemSubmitted = false;
+    this.itemImages=[];
+    this.imageNames=[];
   }
 
   // removes item from the auction
@@ -137,6 +150,54 @@ export class AddItemsComponent implements OnInit {
         this.addingAuction = false;
       }
     );
+  }
+
+  onChange(event:any) {
+    this.file=event.target.files[0];
+  }
+
+  // OnClick of button Upload
+  onUpload() {
+    const file = this.file;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      this.imageNames.push(file.name);
+      this.itemImages.push(reader.result as string);
+      console.log(reader.result);
+    };
+    alert("Image successfully uploaded");
+  }
+
+
+
+
+  fromBinary(encoded:string) {
+    const binary = atob(encoded);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = binary.charCodeAt(i);
+    }
+    return String.fromCharCode(...new Uint16Array(bytes.buffer));
+  }
+
+
+  toBinary(string:string) {
+    const codeUnits = new Uint16Array(string.length);
+    for (let i = 0; i < codeUnits.length; i++) {
+      codeUnits[i] = string.charCodeAt(i);
+    }
+    return btoa(String.fromCharCode(...new Uint8Array(codeUnits.buffer)));
+  }
+
+
+  base64encode(str:string) {
+    let encode = encodeURIComponent(str).replace(/%([a-f0-9]{2})/gi, (m, $1) => String.fromCharCode(parseInt($1, 16)))
+    return btoa(encode)
+  }
+  base64decode(str:string) {
+    let decode = atob(str).replace(/[\x80-\uffff]/g, (m) => `%${m.charCodeAt(0).toString(16).padStart(2, '0')}`)
+    return decodeURIComponent(decode)
   }
 
 }
