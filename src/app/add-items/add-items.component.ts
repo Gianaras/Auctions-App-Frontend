@@ -78,8 +78,8 @@ export class AddItemsComponent implements OnInit {
 
     for(let i=0 ; i < this.itemImages.length ;i++){
       this.newItem.images.push(new Image(this.itemImages[i],this.imageNames[i]));
-      this.items.push(this.newItem);
     }
+    this.items.push(this.newItem);
     form.resetForm();
 
     this.addingItem = false;
@@ -167,37 +167,6 @@ export class AddItemsComponent implements OnInit {
       console.log(reader.result);
     };
     alert("Image successfully uploaded");
-  }
-
-
-
-
-  fromBinary(encoded:string) {
-    const binary = atob(encoded);
-    const bytes = new Uint8Array(binary.length);
-    for (let i = 0; i < bytes.length; i++) {
-      bytes[i] = binary.charCodeAt(i);
-    }
-    return String.fromCharCode(...new Uint16Array(bytes.buffer));
-  }
-
-
-  toBinary(string:string) {
-    const codeUnits = new Uint16Array(string.length);
-    for (let i = 0; i < codeUnits.length; i++) {
-      codeUnits[i] = string.charCodeAt(i);
-    }
-    return btoa(String.fromCharCode(...new Uint8Array(codeUnits.buffer)));
-  }
-
-
-  base64encode(str:string) {
-    let encode = encodeURIComponent(str).replace(/%([a-f0-9]{2})/gi, (m, $1) => String.fromCharCode(parseInt($1, 16)))
-    return btoa(encode)
-  }
-  base64decode(str:string) {
-    let decode = atob(str).replace(/[\x80-\uffff]/g, (m) => `%${m.charCodeAt(0).toString(16).padStart(2, '0')}`)
-    return decodeURIComponent(decode)
   }
 
 }
