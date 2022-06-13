@@ -6,7 +6,18 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {User} from "../model/user";
 import {Seller} from "../model/seller";
-import {toBase64String} from "@angular/compiler/src/output/source_map";
+
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import Vector from 'ol/source/Vector';
+import LayerVector from 'ol/layer/Vector'
+import * as olProj from 'ol/proj';
+import Style from 'ol/style/Style'
+import Icon from 'ol/style/Icon'
+import Feature from 'ol/Feature'
+import Point from 'ol/geom/Point'
 
 @Component({
   selector: 'app-item-details',
@@ -15,8 +26,8 @@ import {toBase64String} from "@angular/compiler/src/output/source_map";
 })
 export class ItemDetailsComponent implements OnInit {
 
-  images:any = [];
-
+  images: any = [];
+  map: Map;
 
   form: FormGroup;
   items: Items | undefined;
@@ -40,6 +51,12 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.map = new Map({
+      view: new View({ center: [0, 0], maxZoom: 18, zoom: 6 }),
+      layers: [ new TileLayer({ source: new OSM(), }) ],
+      target: 'ol-map'
+    });
+
     if (localStorage.getItem('token')) this.isLoggedIn = true;
     this.getItems();
   }
@@ -64,8 +81,6 @@ export class ItemDetailsComponent implements OnInit {
             this.images.push(img);
           }
         }
-
-
 
         // convert UTC times to typescript dates
         this.items.started = new Date();
@@ -94,6 +109,8 @@ export class ItemDetailsComponent implements OnInit {
 
         // check if this auction can be deleted/edited (it must have no bids and be active)
         if (!this.active || (this.items.bids && this.items.bids.length > 0)) this.canDelete = false;
+
+        this.setupMap();
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -207,6 +224,35 @@ export class ItemDetailsComponent implements OnInit {
         this.isDeleting = false;
       }
     );
+  }
+
+  // setup map
+  setupMap(): void {
+    // center map to auction location
+    this.map.getView().setCenter(olProj.fromLonLat([Number(this.items.location.longitude),
+      Number(this.items.location.latitude)]));
+    this.map.getView().setZoom(14);
+
+    // add marker
+    const layer = new LayerVector({
+      source: new Vector({
+        features: [
+          new Feature({
+            geometry: new Point(olProj.fromLonLat([Number(this.items.location.longitude),
+              Number(this.items.location.latitude)]))
+          })
+        ]
+      }),
+      style: new Style({
+        image: new Icon({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+        })
+      })
+    });
+    this.map.addLayer(layer);
   }
 
   // go to edit page
