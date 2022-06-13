@@ -29,5 +29,17 @@ export class MessageService{
     return this.http.get<User[]>(this.messagesURL+"/send/"+username);
   }
 
+  updateMessage(username:string,message:Message): Observable<any> {
+    return this.http.put(this.messagesURL+"/inbox/"+username,message);
+  }
+
+  getOutbox(username:string){
+    return this.http.get<Message[]>(this.messagesURL+"/outbox/"+username);
+  }
+
+  deleteMessage(message:Message,username:string){
+    return this.http.delete(this.messagesURL+"/"+username+"/"+message.id);
+  }
+
 
 }

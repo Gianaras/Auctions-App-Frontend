@@ -22,6 +22,7 @@ import {InboxComponent} from "./messages/inbox/inbox.component";
 import {SendMessageComponent} from "./messages/send/send.component";
 import {MessageComponent} from "./messages/messages/message.component";
 import { EditItemsComponent } from './edit-items/edit-items.component';
+import {OutboxComponent} from "./messages/outbox/outbox.component";
 
 
 const appRoutes: Routes = [
@@ -32,7 +33,9 @@ const appRoutes: Routes = [
   },
   { path:'messages', canActivate: [LoginGuard], component: MessageComponent, children: [
       { path:'send', component: SendMessageComponent },
-      { path: 'inbox', component: InboxComponent }
+      { path: 'inbox', component: InboxComponent },
+      { path: 'outbox', component: OutboxComponent }
+
     ]
   },
   { path: 'login', component: LoginComponent },
@@ -57,7 +60,7 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent, UserComponent, UserDetailsComponent, RegisterComponent,
     LoginComponent, ItemsComponent, ItemDetailsComponent, AddItemsComponent,
-    InboxComponent,SendMessageComponent,MessageComponent, EditItemsComponent,
+    InboxComponent,OutboxComponent,SendMessageComponent,MessageComponent, EditItemsComponent,
   ],
     imports: [
         BrowserModule, FormsModule, HttpClientModule,

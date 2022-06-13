@@ -8,15 +8,15 @@ import {User} from "../../model/user";
 
 @Component({
   selector: 'app-messages',
-  templateUrl: './inbox.component.html',
-  styleUrls: ['./inbox.component.css']
+  templateUrl: './outbox.component.html',
+  styleUrls: ['./outbox.component.css']
 })
-export class InboxComponent implements OnInit{
+export class OutboxComponent implements OnInit{
 
   messages: Message[]=[];
   form: FormGroup;
-  disableDeleteButton:boolean=false;
 
+  disableDeleteButton:Boolean = false;
 
   constructor (private service: MessageService,
                private route: ActivatedRoute,
@@ -31,32 +31,16 @@ export class InboxComponent implements OnInit{
     this.getMessages();
   }
 
-
-
-  markAsRead(messages:Message[],myUser:User){
-    //messages have been loaded into inbox, mark as read
-    console.log(localStorage.getItem('token'));
-    for(let message of messages){
-      console.log(message.content);
-      this.service.updateMessage(myUser.username,message).subscribe(
-        (response: HttpResponse<any>) =>{
-          console.log(response);
-        },
-        (error: HttpErrorResponse) => { alert(error.message);}
-      );
-    }
-  }
-
   getMessages(){
+    this.messages = [];
     let userString: string | null = localStorage.getItem('user');
     if (!userString) return;
     let myUser: User = JSON.parse(userString);
-    this.service.getInbox(myUser.username).subscribe(
+    this.service.getOutbox(myUser.username).subscribe(
       (response: Message[]) => {
         this.messages = response;
       },
-      (error: HttpErrorResponse) => { alert(error.message);},
-      ()=> {this.markAsRead(this.messages,myUser)}
+      (error: HttpErrorResponse) => { alert(error.message);}
     );
   }
 
@@ -69,9 +53,9 @@ export class InboxComponent implements OnInit{
       ()=> {
         console.log("Message deleted successfully")
       },
-      (error:HttpErrorResponse) => {
-        this.disableDeleteButton=false;
-        alert(error.message);}
+    (error:HttpErrorResponse) => {
+      this.disableDeleteButton=false;
+      alert(error.message);}
     );
     alert("Message deleted successfully");
     this.getMessages();
