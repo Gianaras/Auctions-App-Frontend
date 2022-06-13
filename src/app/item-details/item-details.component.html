@@ -94,6 +94,10 @@
 </div>
 
 
+<h2>Auction on Map:</h2>
+<div id="ol-map" class="map"></div>
+
+
 <div *ngIf="items && items.bids">
 
   <div *ngIf="items.bids.length > 0">
@@ -130,6 +134,22 @@
     <b> <button [disabled]="loading || isDeleting" (click)="deleteItems()">
       Delete Auction
     </button> </b>
+  </div>
+
+</div>
+
+<div *ngIf="isLoggedIn && isMine && loaded && items">
+  <h2>Show Auction in XML format:</h2>
+
+  <div>
+    <b> <button [disabled]="loading" (click)="showXML = true">
+      Show XML
+    </button> </b>
+  </div>
+
+  <div *ngIf="showXML">
+    {{xml}}
+    <b> <button class="invisible"></button> </b>
   </div>
 
 </div>

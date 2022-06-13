@@ -6,7 +6,19 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {User} from "../model/user";
 import {Seller} from "../model/seller";
-import {toBase64String} from "@angular/compiler/src/output/source_map";
+import * as JsonToXML from "js2xmlparser";
+
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import Vector from 'ol/source/Vector';
+import LayerVector from 'ol/layer/Vector'
+import * as olProj from 'ol/proj';
+import Style from 'ol/style/Style'
+import Icon from 'ol/style/Icon'
+import Feature from 'ol/Feature'
+import Point from 'ol/geom/Point'
 
 @Component({
   selector: 'app-item-details',
@@ -15,8 +27,9 @@ import {toBase64String} from "@angular/compiler/src/output/source_map";
 })
 export class ItemDetailsComponent implements OnInit {
 
-  images:any = [];
-
+  images: any = [];
+  map: Map;
+  xml: string;
 
   form: FormGroup;
   items: Items | undefined;
@@ -27,6 +40,7 @@ export class ItemDetailsComponent implements OnInit {
   isMine = false; // whether the auction seller is the currently logged-in user
   submitted = false;
   active = true;
+  showXML = false;
   loaded = false; // only becomes true after we have resolved if this auction belongs to logged-in user
                   // (prevents bid placing and delete option showing during loading)
 
@@ -40,6 +54,12 @@ export class ItemDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.map = new Map({
+      view: new View({ center: [0, 0], maxZoom: 18, zoom: 6 }),
+      layers: [ new TileLayer({ source: new OSM(), }) ],
+      target: 'ol-map'
+    });
+
     if (localStorage.getItem('token')) this.isLoggedIn = true;
     this.getItems();
   }
@@ -57,15 +77,14 @@ export class ItemDetailsComponent implements OnInit {
     this.service.getItems(+id).subscribe(
       (response: Items) => {
         this.items = response;
-        for(let item of this.items.items){
-          for(let image of item.images){
+
+        for (let item of this.items.items) {
+          for (let image of item.images) {
             console.log(image.image_data);
             let img = image.image_data;
             this.images.push(img);
           }
         }
-
-
 
         // convert UTC times to typescript dates
         this.items.started = new Date();
@@ -78,10 +97,9 @@ export class ItemDetailsComponent implements OnInit {
           bid.date = new Date();
           bid.date.setTime(bid.timeUTC);
         }
-        //sort bid array to display latest bids first
-        this.items.bids.sort(
-          (bid1, bid2) => bid2.date.getTime() - bid1.date.getTime(),
-        );
+
+        //sort bid array to display the latest bids first
+        this.items.bids.sort((bid1, bid2) => bid2.date.getTime() - bid1.date.getTime());
 
         // check if auction is active
         let now: Date = new Date();
@@ -89,15 +107,17 @@ export class ItemDetailsComponent implements OnInit {
         if ((now > this.items.ends) || (this.items.currentBid >= this.items.buyPrice))
           this.active = false;
 
-        // check if this auction belongs to logged-in user
-        this.isThisMine();
+        this.isThisMine(); // check if this auction belongs to logged-in user
 
         // check if this auction can be deleted/edited (it must have no bids and be active)
         if (!this.active || (this.items.bids && this.items.bids.length > 0)) this.canDelete = false;
+
+        this.setupMap(); // center view and place marker
+
+        this.xml = JsonToXML.parse("items", this.items); // convert to XML
+        console.log(this.xml);
       },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
+      (error: HttpErrorResponse) => { alert(error.message); }
     );
   }
 
@@ -207,6 +227,35 @@ export class ItemDetailsComponent implements OnInit {
         this.isDeleting = false;
       }
     );
+  }
+
+  // setup map
+  setupMap(): void {
+    // center map to auction location
+    this.map.getView().setCenter(olProj.fromLonLat([Number(this.items.location.longitude),
+      Number(this.items.location.latitude)]));
+    this.map.getView().setZoom(14);
+
+    // add marker
+    const layer = new LayerVector({
+      source: new Vector({
+        features: [
+          new Feature({
+            geometry: new Point(olProj.fromLonLat([Number(this.items.location.longitude),
+              Number(this.items.location.latitude)]))
+          })
+        ]
+      }),
+      style: new Style({
+        image: new Icon({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+        })
+      })
+    });
+    this.map.addLayer(layer);
   }
 
   // go to edit page
