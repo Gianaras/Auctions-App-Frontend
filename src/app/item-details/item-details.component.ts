@@ -6,6 +6,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {User} from "../model/user";
 import {Seller} from "../model/seller";
+import * as JsonToXML from "js2xmlparser";
 
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -28,6 +29,7 @@ export class ItemDetailsComponent implements OnInit {
 
   images: any = [];
   map: Map;
+  xml: string;
 
   form: FormGroup;
   items: Items | undefined;
@@ -38,6 +40,7 @@ export class ItemDetailsComponent implements OnInit {
   isMine = false; // whether the auction seller is the currently logged-in user
   submitted = false;
   active = true;
+  showXML = false;
   loaded = false; // only becomes true after we have resolved if this auction belongs to logged-in user
                   // (prevents bid placing and delete option showing during loading)
 
@@ -74,8 +77,9 @@ export class ItemDetailsComponent implements OnInit {
     this.service.getItems(+id).subscribe(
       (response: Items) => {
         this.items = response;
-        for(let item of this.items.items){
-          for(let image of item.images){
+
+        for (let item of this.items.items) {
+          for (let image of item.images) {
             console.log(image.image_data);
             let img = image.image_data;
             this.images.push(img);
@@ -93,10 +97,9 @@ export class ItemDetailsComponent implements OnInit {
           bid.date = new Date();
           bid.date.setTime(bid.timeUTC);
         }
-        //sort bid array to display latest bids first
-        this.items.bids.sort(
-          (bid1, bid2) => bid2.date.getTime() - bid1.date.getTime(),
-        );
+
+        //sort bid array to display the latest bids first
+        this.items.bids.sort((bid1, bid2) => bid2.date.getTime() - bid1.date.getTime());
 
         // check if auction is active
         let now: Date = new Date();
@@ -104,17 +107,17 @@ export class ItemDetailsComponent implements OnInit {
         if ((now > this.items.ends) || (this.items.currentBid >= this.items.buyPrice))
           this.active = false;
 
-        // check if this auction belongs to logged-in user
-        this.isThisMine();
+        this.isThisMine(); // check if this auction belongs to logged-in user
 
         // check if this auction can be deleted/edited (it must have no bids and be active)
         if (!this.active || (this.items.bids && this.items.bids.length > 0)) this.canDelete = false;
 
-        this.setupMap();
+        this.setupMap(); // center view and place marker
+
+        this.xml = JsonToXML.parse("items", this.items); // convert to XML
+        console.log(this.xml);
       },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
+      (error: HttpErrorResponse) => { alert(error.message); }
     );
   }
 

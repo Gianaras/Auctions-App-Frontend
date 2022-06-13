@@ -138,6 +138,22 @@
 
 </div>
 
+<div *ngIf="isLoggedIn && isMine && loaded && items">
+  <h2>Show Auction in XML format:</h2>
+
+  <div>
+    <b> <button [disabled]="loading" (click)="showXML = true">
+      Show XML
+    </button> </b>
+  </div>
+
+  <div *ngIf="showXML">
+    {{xml}}
+    <b> <button class="invisible"></button> </b>
+  </div>
+
+</div>
+
 <!--scuffed way to add bottom margin-->
 <div *ngIf="!(isLoggedIn && active && isMine && loaded && items && canDelete)">
   <b> <button class="invisible"></button> </b>
