@@ -81,7 +81,7 @@ export class RegisterComponent implements OnInit {
 
           this.service.addUser(user).subscribe(
             () => {
-              alert("Registration successful!");
+              alert("Registration successful!\nNote: Your account is not active yet. An admin will activate it shortly.");
               this.router.navigate(['/login'], { relativeTo: this.route });
             },
             error => {
