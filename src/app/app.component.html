@@ -5,7 +5,7 @@
   <a routerLink="/register">Register</a>
   <a routerLink="/items">Browse</a>
   <a routerLink="/myItems">My Auctions</a>
-  <a routerLink="/messages">Messages</a>
+  <a routerLink="/messages">Messages <ng-container *ngIf="unreadCount">{{"("+unreadCount+" Unread)"}}</ng-container>  </a>
   <b> <button class="logoutButton" (click)="logout()"> Logout </button> </b>
 </nav>
 <router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 <div>
-  <h2>Inbox:</h2>
+  <h2>Outbox:</h2>
 </div>
 
 <ol>
@@ -7,12 +7,12 @@
     <div *ngIf="messages">
       <table>
         <tr>
-          <th>From</th>
+          <th>To</th>
           <th>Message</th>
           <th>Date Sent</th>
         </tr>
         <tr>
-          <td>{{message.sender}}</td>
+          <td>{{message.receiver}}</td>
           <td>{{message.content}}</td>
           <td>{{message.date}}</td>
         </tr>
