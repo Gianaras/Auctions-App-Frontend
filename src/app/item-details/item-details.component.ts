@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {User} from "../model/user";
 import {Seller} from "../model/seller";
 import * as JsonToXML from "js2xmlparser";
+import { DomSanitizer } from '@angular/platform-browser';
 
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -30,6 +31,8 @@ export class ItemDetailsComponent implements OnInit {
   images: any = [];
   map: Map;
   xml: string;
+  fileUrl;
+  fileName: string = "tmp";
 
   form: FormGroup;
   items: Items | undefined;
@@ -40,14 +43,14 @@ export class ItemDetailsComponent implements OnInit {
   isMine = false; // whether the auction seller is the currently logged-in user
   submitted = false;
   active = true;
-  showXML = false;
   loaded = false; // only becomes true after we have resolved if this auction belongs to logged-in user
                   // (prevents bid placing and delete option showing during loading)
 
   constructor(private route: ActivatedRoute,
               private service: ItemsService,
               private router: Router,
-              private formBuilder: FormBuilder,) {
+              private formBuilder: FormBuilder,
+              private sanitizer: DomSanitizer) {
     this.form = this.formBuilder.group({
       amount: ['', Validators.required],
     });
@@ -114,8 +117,13 @@ export class ItemDetailsComponent implements OnInit {
 
         this.setupMap(); // center view and place marker
 
-        this.xml = JsonToXML.parse("items", this.items); // convert to XML
+        // xml
+        this.xml = JsonToXML.parse("auction", this.items); // convert to XML
         console.log(this.xml);
+
+        const blob = new Blob([this.xml], { type: 'application/octet-stream' });
+        this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+        this.fileName = "auction" + this.items.id + ".xml";
       },
       (error: HttpErrorResponse) => { alert(error.message); }
     );
