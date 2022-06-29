@@ -139,18 +139,12 @@
 </div>
 
 <div *ngIf="isLoggedIn && isMine && loaded && items">
-  <h2>Show Auction in XML format:</h2>
+  <h2>Download Auction in XML format:</h2>
 
-  <div>
-    <b> <button [disabled]="loading" (click)="showXML = true">
-      Show XML
-    </button> </b>
-  </div>
+  <a [href]="fileUrl" download="{{fileName}}">Download XML</a>
 
-  <div *ngIf="showXML">
-    {{xml}}
-    <b> <button class="invisible"></button> </b>
-  </div>
+  <!--scuffed way to add bottom margin-->
+  <b> <button class="invisible"></button> </b>
 
 </div>
 

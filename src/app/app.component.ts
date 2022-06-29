@@ -12,7 +12,7 @@ import {HttpErrorResponse} from "@angular/common/http";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
-  title = 'ProjectFrontEnd';
+  title = 'Όρμος Έψιλον';
 
   messages:Message[]=[];
   unreadCount = 0;
