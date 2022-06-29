@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  //  this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   get formControls() { return this.form.controls; }
@@ -55,9 +55,17 @@ export class LoginComponent implements OnInit {
                 },
               error => { alert(error); }
             );
-
           alert("Logged in successfully!");
           this.router.navigate([this.returnUrl]);
+
+          //scuffed way to ensure navigate finishes before we refresh and "overwrite" it
+          setTimeout(() =>
+            {
+              window.location.reload()
+            },
+            100);
+
+
           this.loading = false;
         },
         error => {

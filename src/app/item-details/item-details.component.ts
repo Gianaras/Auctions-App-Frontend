@@ -83,7 +83,6 @@ export class ItemDetailsComponent implements OnInit {
 
         for (let item of this.items.items) {
           for (let image of item.images) {
-            console.log(image.image_data);
             let img = image.image_data;
             this.images.push(img);
           }
