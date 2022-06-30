@@ -61,12 +61,12 @@
           <td>{{myItem.description}}</td>
         </tr>
       </table>
-      <div  *ngFor="let image of images" >
-        <img src='{{image}}'/>
-      </div>
+
     </div>
 </div>
-
+  <div  *ngFor="let image of images" >
+    <img src='{{image}}' alt="Image of items" />
+  </div>
 </div>
 
 <div *ngIf="isLoggedIn && active && !isMine && loaded">
@@ -95,7 +95,7 @@
 
 
 <h2>Auction on Map:</h2>
-<div id="ol-map" class="map"></div>
+<div id="ol-map" class="map" >{{items.location.latitude +" "+ items.location.longitude}}</div>
 
 
 <div *ngIf="items && items.bids">

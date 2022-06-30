@@ -44,8 +44,8 @@ export class AddItemsComponent implements OnInit {
       endDate: [formatDate(0, 'shortDate', 'en'), Validators.required],
       country: ['', Validators.required],
       location: ['', Validators.required],
-      longitude: ['', Validators.required],
-      latitude: ['', Validators.required]
+      longitude: [''],
+      latitude: ['']
     });
 
     this.itemForm = this.formBuilder.group({
@@ -108,9 +108,9 @@ export class AddItemsComponent implements OnInit {
     if (this.form.value['buyPrice'] <= this.form.value['firstBid']) invalid = true; // first bid < buy price
     if (this.items.length == 0) invalid = true; // at least one item is needed
 
-    if (isNaN(Number(this.form.value['longitude'])) || isNaN(Number(this.form.value['latitude']))) invalid = true;
+    //if (isNaN(Number(this.form.value['longitude'])) || isNaN(Number(this.form.value['latitude']))) invalid = true;
     if (this.form.value['longitude'] < -180 || this.form.value['longitude'] > 180
-     || this.form.value['latitude'] < -180 || this.form.value['latitude'] > 180) invalid = true; // range: [-180, 180]
+     || this.form.value['latitude'] < -90 || this.form.value['latitude'] > 90) invalid = true; // range: long[-180, 180] , lat[-90,90]
 
     // convert times to UTC
     let tokens: string[] = this.form.value['endDate'].split("-", 3);
@@ -131,9 +131,17 @@ export class AddItemsComponent implements OnInit {
     if (!userString) return;
     let myUser: User = JSON.parse(userString);
 
+    let longitude = this.form.value['longitude']
+    let latitude = this.form.value['latitude']
+    if(!longitude || !latitude){
+      latitude = myUser.location.latitude;
+      longitude = myUser.location.longitude;
+    }
+
+
     // get location
-    let location: Location = new Location(this.form.value['country'], this.form.value['longitude'],
-      this.form.value['latitude'], this.form.value['location']);
+    let location: Location = new Location(this.form.value['country'], longitude,
+      latitude, this.form.value['location']);
 
     // add auction
     let items: Items = new Items(0, this.form.value['buyPrice'], this.form.value['firstBid'],
@@ -168,5 +176,29 @@ export class AddItemsComponent implements OnInit {
     };
     alert("Image successfully uploaded");
   }
+
+  locationRequired(){
+    if(this.form.value['country'] != "" || this.form.value['location'] != "" || this.form.value['longitude'] != "" || this.form.value['latitude'] != ""){
+      this.form.get('country').addValidators(Validators.required);
+      this.form.get('location').addValidators(Validators.required);
+      this.form.get('longitude').addValidators(Validators.required);
+      this.form.get('latitude').addValidators(Validators.required);
+      this.form.get('country').updateValueAndValidity();
+      this.form.get('location').updateValueAndValidity();
+      this.form.get('latitude').updateValueAndValidity();
+      this.form.get('longitude').updateValueAndValidity();
+    }else{
+      this.form.get('country').removeValidators(Validators.required);
+      this.form.get('location').removeValidators(Validators.required);
+      this.form.get('longitude').removeValidators(Validators.required);
+      this.form.get('latitude').removeValidators(Validators.required);
+      this.form.get('country').updateValueAndValidity();
+      this.form.get('location').updateValueAndValidity();
+      this.form.get('latitude').updateValueAndValidity();
+      this.form.get('longitude').updateValueAndValidity();
+
+    }
+  }
+
 
 }
