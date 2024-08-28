@@ -47,6 +47,7 @@
       <input id="email" type="text" formControlName="email" />
       <div *ngIf="submitted && formControls['email'].errors">
         <b> <div *ngIf="formControls['email'].errors['required']">Email is required.</div> </b>
+        <b> <div *ngIf="formControls['email'].errors['email']">Email must be valid.</div> </b>
       </div>
     </div>
 
