@@ -1,11 +1,25 @@
 <h1>{{title}}</h1>
+
 <nav>
-  <a routerLink="/users">Users</a>
-  <a routerLink="/login">Login</a>
-  <a routerLink="/register">Register</a>
+
+  <ng-container *ngIf="user && user.admin">
+    <a routerLink="/users">Users</a>
+  </ng-container>
+
+  <ng-container *ngIf="!user">
+    <a routerLink="/login">Login</a>
+    <a routerLink="/register">Register</a>
+
+  </ng-container>
+
   <a routerLink="/items">Browse</a>
-  <a routerLink="/myItems">My Auctions</a>
-  <a routerLink="/messages">Messages <ng-container *ngIf="unreadCount">{{"("+unreadCount+" Unread)"}}</ng-container>  </a>
-  <b> <button class="logoutButton" (click)="logout()"> Logout </button> </b>
+
+  <ng-container *ngIf="user">
+    <a routerLink="/myItems">My Auctions</a>
+    <a routerLink="/messages">Messages <ng-container *ngIf="unreadCount">{{"("+unreadCount+" Unread)"}}</ng-container>  </a>
+    <b> <button class="logoutButton" (click)="logout()"> Logout </button> </b>
+   {{user.username}}
+  </ng-container>
+
 </nav>
 <router-outlet></router-outlet>

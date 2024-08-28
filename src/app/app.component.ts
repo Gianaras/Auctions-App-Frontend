@@ -16,6 +16,7 @@ export class AppComponent implements OnInit{
 
   messages:Message[]=[];
   unreadCount = 0;
+  user:User|null = null;
 
   constructor(private authenticationService: AuthenticationService,
   private service: MessageService) {
@@ -23,20 +24,25 @@ export class AppComponent implements OnInit{
 
   logout(): void {
     this.authenticationService.logout();
+    this.user = null;
     alert("Logged out successfully!");
   }
 
   ngOnInit() {
+    this.loadUser();
+  }
+
+  loadUser(){
+    let userString: string | null = localStorage.getItem('user');
+    if (!userString) return;
+    this.user = JSON.parse(userString);
     this.getMessages();
   }
 
-
   getMessages(){
     this.messages = [];
-
-
-
-    interval(3000).subscribe(
+    //5 second interval between http requests to inbox
+    interval(5000).subscribe(
       x=>{
         let userString: string | null = localStorage.getItem('user');
         if (!userString) return;
@@ -52,7 +58,7 @@ export class AppComponent implements OnInit{
                 this.unreadCount++;
             }
           }
-          console.log("You have "+this.unreadCount+" messages!");
+         // console.log("You have "+this.unreadCount+" messages!");
 
 
         },

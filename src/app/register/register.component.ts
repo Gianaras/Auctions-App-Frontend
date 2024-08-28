@@ -52,10 +52,10 @@ export class RegisterComponent implements OnInit {
     let invalid: boolean = false;
     if (isNaN(Number(this.form.value['longitude'])) || isNaN(Number(this.form.value['latitude']))) invalid = true;
     if (this.form.value['longitude'] < -180 || this.form.value['longitude'] > 180
-      || this.form.value['latitude'] < -180 || this.form.value['latitude'] > 180) invalid = true;
+      || this.form.value['latitude'] < -90 || this.form.value['latitude'] > 90) invalid = true;
 
     if (invalid) {
-      alert("Longitude and latitude must be numbers in between -180 and 180.");
+      alert("Longitude and latitude must be numbers in between -180 and 180 for longitude -90 to 90 for latitude.");
       return;
     }
 
@@ -72,8 +72,8 @@ export class RegisterComponent implements OnInit {
           }
 
           // create location
-        let location: Location = new Location(this.form.value['country'], this.form.value['location'],
-          this.form.value['longitude'], this.form.value['latitude']);
+        let location: Location = new Location(this.form.value['country'],this.form.value['longitude'],
+           this.form.value['latitude'], this.form.value['location']);
 
           // if username does not exist, add user
           let user = new User(this.form.value['username'], this.form.value['password'], this.form.value['firstName'],
