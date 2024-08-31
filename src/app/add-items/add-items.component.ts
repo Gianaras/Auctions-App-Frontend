@@ -33,6 +33,7 @@ export class AddItemsComponent implements OnInit {
   newItem: Item | any = null;
   itemImages: string[] = [];
   imageNames:string[]=[];
+  selectedFileName: string = '';
 
   constructor(private formBuilder: FormBuilder,
               private itemsService: ItemsService,
@@ -162,6 +163,7 @@ export class AddItemsComponent implements OnInit {
 
   onChange(event:any) {
     this.file=event.target.files[0];
+    this.selectedFileName = this.file.name;
   }
 
   // OnClick of button Upload

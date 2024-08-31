@@ -1,5 +1,5 @@
 <div *ngIf="user">
-  <table>
+  <table class="cell py-3 px-4 has-background-black has-radius-normal">
     <tr>
       <th>Id</th>
       <th>Username</th>
@@ -27,13 +27,9 @@
   </table>
 
   <div *ngIf="user.id && !user.admin">
-    <b> <button (click)="deleteUser(user.id)" [disabled]="isDeleting">
-      Delete user
-    </button> </b>
-
-    <b> <button *ngIf="!user.activated" (click)="activateUser()" [disabled]="isActivating">
-      Activate account
-    </button> </b>
+    <button class="button is-dark is-primary mr-5" *ngIf="!user.activated" (click)="activateUser()" [disabled]="isActivating">
+      Activate account</button>
+    <button class="button is-dark is-danger" (click)="deleteUser(user.id)" [disabled]="isDeleting">Delete user</button>
   </div>
 </div>
 

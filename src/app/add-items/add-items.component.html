@@ -2,136 +2,124 @@
   <form [formGroup]="form" (ngSubmit)="onFinalSubmit()">
 
     <div>
-      <h2>Items:</h2>
+      <h3>Add an Item:</h3>
+      <div class="subtitle">First upload item's images, then add its name/description, then click add.</div>
+      <br>
     </div>
+
+    <form #myForm="ngForm" [formGroup]="itemForm" (ngSubmit)="onItemSubmit(myForm)">
+
+      <div class="file">
+        <label class="file-label">
+          <input class="file-input" type="file" id="img" name="img" accept="image/*" (change)="onChange($event)">
+          <span class="file-cta">⬆️ Browse image for item... </span>
+          <span *ngIf="selectedFileName" class="file-name"> {{selectedFileName}} </span>
+        </label>
+
+        <button (click)="onUpload()" class="button is-info is-dark ml-5">Upload</button>
+      </div>
+
+      <div class="field is-horizontal"> <div class="control">
+        <label class="label" for="name">Name: </label>
+        <input class="input is-link" placeholder="ex. Jar of Pickles" id="name" type="text" formControlName="name"/>
+        <div *ngIf="itemSubmitted  && itemFormControls['name'].errors?.['required']">
+          <p class="help is-danger">Name is required.</p> </div> </div> </div>
+
+      <div class="field is-horizontal"> <div class="control">
+        <label class="label" for="description">Description: </label>
+        <input class="input is-link" placeholder="Never forget the pickles." id="description" type="text" formControlName="description"/>
+        <div *ngIf="itemSubmitted  && itemFormControls['description'].errors?.['required']">
+          <p class="help is-danger">Description is required.</p> </div> </div> </div>
+
+      <br>
+
+      <div class="field">
+        <div class="control">
+          <button class="button is-primary is-dark" [disabled]="addingItem"> Add Item </button>
+        </div>
+      </div>
+
+    </form>
+
+    <hr class="bd-hr">
+
+    <div *ngIf="items.length">
+      <h2>Current Items:</h2> </div>
 
     <div *ngIf="items">
-      <div *ngFor='let item of items'>
-        <div *ngIf="item">
+      <div class="fixed-grid has-3-cols"> <div class="grid">
+        <div *ngFor='let item of items'>
+          <div class="cell py-3 px-4 has-background-black has-radius-normal" *ngIf="item">
 
-          <table>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Images</th>
-            </tr>
-            <tr>
-              <td>{{item.name}}</td>
-              <td>{{item.description}}</td>
-              <td><div *ngFor="let image of item.images">
-                <div *ngIf="image">
-                  {{image.image_name}}
-                </div>
-              </div> </td>
-            </tr>
-          </table>
+            <table>
+              <tr> <th>Name</th> <th>Description</th> <th>Images</th> </tr>
+              <tr>
+                <td>{{item.name}}</td> <td>{{item.description}}</td>
+                <td><div *ngFor="let image of item.images">
+                  <div *ngIf="image"> {{image.image_name}} </div> </div> </td> </tr>
+            </table>
 
-          <b> <button class="myButton" (click)="removeItem(item.name, item.description)">
-            Remove Item
-          </button> </b>
+            <button class="button is-danger is-dark" (click)="removeItem(item.name, item.description)">
+              Remove Item </button>
 
-        </div>
-      </div>
-    </div>
+          </div> </div> </div> </div> </div>
 
-    <div>
-      <h3>Add an Item:</h3>
-      <h3>(first upload item's images, then add its name/description, then click add)</h3>
-    </div>
-
-    <div>
-      <form #myForm="ngForm" [formGroup]="itemForm" (ngSubmit)="onItemSubmit(myForm)">
-        <div>
-          <label for="name">Name: </label>
-          <input id="name" type="text" formControlName="name" />
-          <div *ngIf="itemSubmitted && itemFormControls['name'].errors">
-            <b> <div *ngIf="itemFormControls['name'].errors['required']">Name is required.</div> </b>
-          </div>
-        </div>
-
-        <div>
-          <label for="description">Description: </label>
-          <input id="description" type="text" formControlName="description" />
-          <div *ngIf="itemSubmitted && itemFormControls['description'].errors">
-            <b> <div *ngIf="itemFormControls['description'].errors['required']">Description is required.</div> </b>
-          </div>
-        </div>
-        <b> <button class="myButton" [disabled]="addingItem">
-          Add Item
-        </button> </b>
-
-      </form>
-
-      <div class="text-center">
-        <input class="form-control" type="file" id="img" name="img" accept="image/*"
-               (change)="onChange($event)">
-
-        <button (click)="onUpload()"
-                class="btn btn-success">
-          Upload
-        </button>
-      </div>
-
-
-
-    </div>
-
+    <div *ngIf="items.length">
+      <hr class="bd-hr"> </div>
 
     <div>
       <h2>Choose categories:</h2>
     </div>
 
-    <table>
-      <tr>
-        <th *ngFor="let category of categories">
-          <label for="{{category.id}}">{{category.id}}:</label>
-        </th>
-      </tr>
-      <tr>
-        <th class="myTh" *ngFor="let category of categories">
-          <input id="{{category.id}}" [value]="category.id" type="checkbox" (change)="onCheckbox(category.id, $event)" />
-        </th>
-      </tr>
-    </table>
-
-    <div>
-      <h2>General Information:</h2>
+    <div class="checkboxes">
+      <label class="checkbox" *ngFor="let category of categories">
+        <input id="{{category.id}}" [value]="category.id" type="checkbox" (change)="onCheckbox(category.id, $event)" />
+        {{category.id}}
+      </label>
     </div>
 
-    <div>
-      <label for="buyPrice">Buy Price: </label>
-      <input id="buyPrice" type="number" min="0" formControlName="buyPrice" />
-      <div *ngIf="submitted && formControls['buyPrice'].errors">
-        <b> <div *ngIf="formControls['buyPrice'].errors['required']">Buy price is required.</div> </b>
-        <b> <div *ngIf="formControls['buyPrice'].errors['min']">Buy price must be above 0.</div> </b>
-      </div>
-    </div>
+    <hr class="bd-hr">
 
     <div>
-      <label for="firstBid">First Bid: </label>
-      <input id="firstBid" type="number" min="0" formControlName="firstBid" />
-      <div *ngIf="submitted && formControls['firstBid'].errors">
-        <b> <div *ngIf="formControls['firstBid'].errors['required']">First bid is required.</div> </b>
-        <b> <div *ngIf="formControls['firstBid'].errors['min']">First bid must be above 0.</div> </b>
-      </div>
+      <h2>Additional Information:</h2>
     </div>
 
-    <div>
-      <label for="endDate">End Date: </label>
-      <input id="endDate" type="date" formControlName="endDate" />
-      <div *ngIf="submitted && formControls['endDate'].errors">
-        <b> <div *ngIf="formControls['endDate'].errors['required']">End date is required.</div> </b>
-      </div>
-    </div>
+    <div class="field is-horizontal"> <div class="field-body">
 
-    <div>
-      <h2>Location Information:</h2>
-    </div>
+      <div class="field"> <div class="control">
+        <label class="label" for="buyPrice">Buy Price: </label>
+        <input class="input is-info" placeholder="ex. 100" id="buyPrice" type="number" formControlName="buyPrice"/>
+        <div *ngIf="submitted && formControls['buyPrice'].errors">
+          <div *ngIf="formControls['buyPrice'].errors['required']">
+            <p class="help is-danger">Buy price is required.</p> </div>
+          <div *ngIf="formControls['buyPrice'].errors['min']">
+            <p class="help is-danger">Buy price must be above 0.</p> </div>
+        </div> </div> </div>
 
-    <div>
-      <label for="country">Country: </label>
-      <select id="country" name="country" (change)="locationRequired()" formControlName="country" >
-        <option>select country</option>
+      <div class="field"> <div class="control">
+        <label class="label" for="firstBid">First Bid: </label>
+        <input class="input is-info" placeholder="ex. 10" id="firstBid" type="number" formControlName="firstBid"/>
+        <div *ngIf="submitted && formControls['firstBid'].errors">
+          <div *ngIf="formControls['firstBid'].errors['required']">
+            <p class="help is-danger">First bid is required.</p> </div>
+          <div *ngIf="formControls['firstBid'].errors['min']">
+            <p class="help is-danger">First bid must be above 0.</p> </div>
+        </div> </div> </div>
+
+      <div class="field"> <div class="control">
+        <label class="label" for="endDate">End Date: </label>
+        <input class="input is-info" placeholder="End Date" id="endDate" type="date" formControlName="endDate"/>
+        <div *ngIf="submitted && formControls['endDate'].errors?.['required']">
+          <p class="help is-danger">End Date is required.</p> </div> </div> </div>
+
+    </div> </div>
+
+    <br>
+
+    <div class="field">
+      <label class="label">Country: </label> <div class="control"> <div class="select is-success">
+      <select formControlName="country">
+        <option value="">Select Country</option>
         <option value="AF">Afghanistan</option>
         <option value="AX">Aland Islands</option>
         <option value="AL">Albania</option>
@@ -385,38 +373,33 @@
         <option value="ZM">Zambia</option>
         <option value="ZW">Zimbabwe</option>
       </select>
-      <div *ngIf="submitted && formControls['country'].errors">
-        <b> <div *ngIf="formControls['country'].errors['required']">Country is required.</div> </b>
-      </div>
-    </div>
+      <div *ngIf="submitted && formControls['country'].errors?.['required']">
+        <p class="help is-danger">Country is required.</p> </div> </div> </div> </div>
 
-    <div>
-      <label for="location">Location: </label>
-      <input id="location" type="text" (change)="locationRequired()" formControlName="location" />
-      <div *ngIf="submitted && formControls['location'].errors">
-        <b> <div *ngIf="formControls['location'].errors['required']">Location is required.</div> </b>
-      </div>
-    </div>
+    <br>
 
-    <div>
-      <label for="longitude">Longitude: </label>
-      <input id="longitude" type="text" (change)="locationRequired()" formControlName="longitude" />
-      <div *ngIf="submitted && formControls['longitude'].errors">
-        <b> <div *ngIf="formControls['longitude'].errors['required']">Longitude is required.</div> </b>
-      </div>
-    </div>
+    <div class="field is-horizontal"> <div class="field-body">
+      <div class="field"> <div class="control">
+        <label class="label" for="location">Location: </label>
+        <input class="input is-success" placeholder="Location" id="location" type="text" formControlName="location"/>
+        <div *ngIf="submitted && formControls['location'].errors?.['required']">
+          <p class="help is-danger">Location is required.</p> </div> </div> </div>
 
-    <div>
-      <label for="latitude">Latitude: </label>
-      <input id="latitude" type="text" (change)="locationRequired()" formControlName="latitude" />
-      <div *ngIf="submitted && formControls['latitude'].errors">
-        <b> <div *ngIf="formControls['latitude'].errors['required']">Latitude is required.</div> </b>
-      </div>
-    </div>
+      <div class="field"> <div class="control">
+        <label class="label" for="longitude">Longitude: </label>
+        <input class="input is-success" placeholder="Longitude" id="longitude" type="text" formControlName="longitude"/>
+        <div *ngIf="submitted && formControls['longitude'].errors?.['required']">
+          <p class="help is-danger">Longitude is required.</p> </div> </div> </div>
 
-    <b> <button [disabled]="addingAuction">
-      Create Auction
-    </button> </b>
+      <div class="field"> <div class="control">
+        <label class="label" for="latitude">Latitude: </label>
+        <input class="input is-success" placeholder="Latitude" id="latitude" type="text" formControlName="latitude"/>
+        <div *ngIf="submitted && formControls['latitude'].errors?.['required']">
+          <p class="help is-danger">Latitude is required.</p> </div> </div> </div> </div> </div>
+
+    <br>
+
+    <button class="button is-primary is-dark" [disabled]="addingAuction"> Create Auction </button>
 
   </form>
 </div>

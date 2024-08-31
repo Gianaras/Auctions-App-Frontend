@@ -1,25 +1,27 @@
 <div>
-  <form [formGroup]="form" (ngSubmit)="login()">
-    <div>
-      <label for="username">Username: </label>
-      <input id="username" type="text" formControlName="username" />
-      <div *ngIf="submitted && formControls['username'].errors">
-        <b> <div *ngIf="formControls['username'].errors['required']">Username is required.</div> </b>
-      </div>
-    </div>
-
-    <div>
-      <label for="password">Password: </label>
-      <input id="password" type="password" formControlName="password" />
-      <div *ngIf="submitted && formControls['password'].errors">
-        <b> <div *ngIf="formControls['password'].errors['required']">Password is required.</div> </b>
-      </div>
-    </div>
-
-    <div>
-      <b> <button [disabled]="loading">
-        Login
-      </button> </b>
-    </div>
-  </form>
+  <h2>Login:</h2>
+  <hr class="bd-hr">
 </div>
+
+<form [formGroup]="form" (ngSubmit)="login()">
+  <div class="field is-horizontal"> <div class="control">
+    <label class="label" for="username">Username: </label>
+    <input class="input is-link" placeholder="Username" id="username" type="text" formControlName="username"/>
+    <div *ngIf="submitted && formControls['username'].errors?.['required']">
+      <p class="help is-danger">Username is required.</p> </div> </div> </div>
+
+  <div class="field is-horizontal"> <div class="control">
+    <label class="label" for="password">Password: </label>
+    <input class="input is-link" placeholder="Password" id="password" type="password" formControlName="password"/>
+    <div *ngIf="submitted && formControls['password'].errors?.['required']">
+      <p class="help is-danger">Password is required.</p> </div> </div> </div>
+
+  <br>
+
+  <div class="field">
+    <div class="control">
+      <button class="button is-primary is-dark" [disabled]="loading">Login</button>
+    </div>
+  </div>
+</form>
+

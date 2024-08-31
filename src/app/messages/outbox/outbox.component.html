@@ -1,27 +1,29 @@
 <div>
   <h2>Outbox:</h2>
+  <br>
 </div>
 
 <ol>
-  <li *ngFor='let message of messages'>
-    <div *ngIf="messages">
-      <table>
-        <tr>
-          <th>To</th>
-          <th>Message</th>
-          <th>Date Sent</th>
-        </tr>
-        <tr>
+  <li>
+    <table class="cell py-3 px-4 has-background-black has-radius-normal">
+      <tr>
+        <th>To</th>
+        <th>Message</th>
+        <th>Date Sent</th>
+        <th>Delete</th>
+      </tr>
+      <ng-container *ngIf="messages">
+        <tr *ngFor='let message of messages'>
           <td>{{message.receiver}}</td>
           <td>{{message.content}}</td>
           <td>{{message.date}}</td>
+          <td>
+            <button class="button is-dark is-danger" [disabled]="disableDeleteButton" (click)="deleteMessage(message)">
+              Delete</button>
+          </td>
         </tr>
-        <button [disabled]="disableDeleteButton" (click)="deleteMessage(message)">
-          Delete
-        </button>
-      </table>
-    </div>
-
+      </ng-container>
+    </table>
   </li>
 </ol>
 <router-outlet></router-outlet>

@@ -7,7 +7,7 @@
 </div> </b>
 
 <div *ngIf="items">
-  <table>
+  <table class="has-background-black has-radius-normal">
     <tr>
       <th>Id</th>
       <th>Current Bid</th>
@@ -30,7 +30,7 @@
     </tr>
   </table>
 
-  <table>
+  <table class="has-background-black has-radius-normal">
     <tr>
       <th>Start Date</th>
       <th>End Date</th>
@@ -42,71 +42,77 @@
   </table>
 </div>
 
+<br>
+
+<div *ngIf="isLoggedIn && active && isMine && loaded && items && canDelete">
+  <button class="button is-primary is-dark mr-5" [disabled]="loading" (click)="routeToEdit()">Edit Auction</button>
+  <a class="button is-info is-dark mr-5" [href]="fileUrl" download="{{fileName}}">Download XML</a>
+  <button class="button is-danger is-dark mr-5" [disabled]="loading || isDeleting" (click)="deleteItems()">Delete Auction</button>
+</div>
+
+<hr class="bd-hr">
+
 <div>
   <h2>Items included:</h2>
 </div>
 
 <div *ngIf="items && items.items">
-  <div *ngFor='let myItem of items.items'>
-    <div *ngIf="myItem">
-      <table>
-        <tr>
-          <th>Id</th>
-          <th>Name</th>
-          <th>Description</th>
-        </tr>
-        <tr>
-          <td>{{myItem.id}}</td>
-          <td>{{myItem.name}}</td>
-          <td>{{myItem.description}}</td>
-        </tr>
-      </table>
+  <div class="fixed-grid has-4-cols"> <div class="grid">
+    <div *ngFor='let myItem of items.items'>
+      <div class="cell py-3 px-4 has-background-black has-radius-normal" *ngIf="myItem">
+        <table class="has-background-black has-radius-normal">
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th colspan="{{images.length}}"></th>
+          </tr>
+          <tr>
+            <td>{{myItem.id}}</td>
+            <td>{{myItem.name}}</td>
+            <td>{{myItem.description}}</td>
+            <td></td>
+          </tr>
+        </table>
+      </div> </div> </div> </div> </div>
 
-    </div>
-</div>
-  <div  *ngFor="let image of images" >
-    <img src='{{image}}' alt="Image of items" />
-  </div>
-</div>
+<br>
+<img *ngFor="let image of images" src='{{image}}' alt="Image of items" class="item-image mr-3" />
 
 <div *ngIf="isLoggedIn && active && !isMine && loaded">
+  <hr class="bd-hr">
   <h2>Place Bid:</h2>
 </div>
 
-
 <div *ngIf="isLoggedIn && active && !isMine && loaded">
   <form [formGroup]="form" (ngSubmit)="addBid()">
-    <div>
-      <label for="amount">Amount: </label>
-      <input id="amount" type="text" formControlName="amount" />
-      <div *ngIf="submitted && formControls['amount'].errors">
-        <b> <div *ngIf="formControls['amount'].errors['required']">Amount is required.</div> </b>
-      </div>
-    </div>
 
-    <div>
-      <b> <button [disabled]="loading" >
-        Place Bid
-      </button> </b>
-    </div>
+    <div class="field is-horizontal"> <div class="control">
+      <label class="label" for="amount">Amount: </label>
+      <input class="input is-link" placeholder="ex. 50" id="amount" type="number" formControlName="amount"/>
+      <div *ngIf="submitted  && formControls['amount'].errors?.['required']">
+        <p class="help is-danger">Amount is required.</p> </div> </div> </div>
+
+    <br>
+    <button class="button is-primary is-dark" [disabled]="loading">Place Bid</button>
 
   </form>
 </div>
 
-
+<hr class="bd-hr">
 <h2>Auction on Map:</h2>
-<div id="ol-map" class="map" >{{items.location.latitude +" "+ items.location.longitude}}</div>
-
+<div id="ol-map" class="map"></div>
 
 <div *ngIf="items && items.bids">
 
   <div *ngIf="items.bids.length > 0">
+    <hr class="bd-hr">
     <h2>Bid History:</h2>
   </div>
 
   <div *ngFor='let bid of items.bids'>
     <div *ngIf="bid">
-      <table>
+      <table class="has-background-black has-radius-normal">
         <tr>
           <th>Bidder</th>
           <th>Amount</th>
@@ -123,33 +129,4 @@
 </div>
 
 
-<div *ngIf="isLoggedIn && active && isMine && loaded && items && canDelete">
-  <h2>Manage Auction:</h2>
-
-  <div>
-    <b> <button [disabled]="loading" (click)="routeToEdit()">
-      Edit Auction
-    </button> </b>
-
-    <b> <button [disabled]="loading || isDeleting" (click)="deleteItems()">
-      Delete Auction
-    </button> </b>
-  </div>
-
-</div>
-
-<div *ngIf="isLoggedIn && isMine && loaded && items">
-  <h2>Download Auction in XML format:</h2>
-
-  <a [href]="fileUrl" download="{{fileName}}">Download XML</a>
-
-  <!--scuffed way to add bottom margin-->
-  <b> <button class="invisible"></button> </b>
-
-</div>
-
-<!--scuffed way to add bottom margin-->
-<div *ngIf="!(isLoggedIn && active && isMine && loaded && items && canDelete)">
-  <b> <button class="invisible"></button> </b>
-</div>
 

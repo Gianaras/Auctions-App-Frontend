@@ -1,25 +1,33 @@
-<h1>{{title}}</h1>
+<nav class="navbar is-black" role="navigation" aria-label="main navigation">
 
-<nav>
+  <div class="navbar-brand">
+    <a class="navbar-item">{{title}}</a>
+  </div>
 
   <ng-container *ngIf="user && user.admin">
-    <a routerLink="/users">Users</a>
+    <a routerLink="/users" class="navbar-item">Users</a>
   </ng-container>
+
+  <a routerLink="/items" class="navbar-item">Browse</a>
 
   <ng-container *ngIf="!user">
-    <a routerLink="/login">Login</a>
-    <a routerLink="/register">Register</a>
-
+    <div class="navbar-end">
+      <a class="navbar-item"><a routerLink="/register" class="button is-primary is-dark">Register</a></a>
+      <a class="navbar-item"><a routerLink="/login" class="button is-info is-dark">Login</a></a>
+    </div>
   </ng-container>
 
-  <a routerLink="/items">Browse</a>
-
   <ng-container *ngIf="user">
-    <a routerLink="/myItems">My Auctions</a>
-    <a routerLink="/messages">Messages <ng-container *ngIf="unreadCount">{{"("+unreadCount+" Unread)"}}</ng-container>  </a>
-    <b> <button class="logoutButton" (click)="logout()"> Logout </button> </b>
-   {{user.username}}
+    <a routerLink="/myItems" class="navbar-item">My Auctions</a>
+    <a routerLink="/messages" class="navbar-item">Messages <ng-container *ngIf="unreadCount">{{"("+unreadCount+" Unread)"}}</ng-container>  </a>
+    <div class="navbar-end">
+      <a class="navbar-item">{{user.username}}</a>
+      <a class="navbar-item"> <button class="button is-info is-dark" (click)="logout()"> Logout </button> </a>
+    </div>
   </ng-container>
 
 </nav>
-<router-outlet></router-outlet>
+
+<section class="section content-with-margins">
+  <router-outlet></router-outlet>
+</section>

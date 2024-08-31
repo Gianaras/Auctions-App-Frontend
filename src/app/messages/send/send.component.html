@@ -1,37 +1,30 @@
 <div>
   <h2>Message a recent user:</h2>
+  <br>
 </div>
 
 <ol>
   <li *ngFor='let user of relevantUsers'>
     <div *ngIf="relevantUsers">
-      <table>
-        <tr>
-          <th>User</th>
-        </tr>
+      <table class="cell py-3 px-4 has-background-black has-radius-normal">
         <tr>
           <td>{{user.username}}</td>
         </tr>
         <div *ngIf="form">
           <form [formGroup]="form" (ngSubmit)="onSubmit(user.username)">
-            <div>
-              <label for="msg">Message: </label>
-              <input id="msg" type="text" formControlName="msg" />
-            </div>
+            <div class="field is-horizontal py-3 px-4"> <div class="field-body">
+            <div class="field"> <div class="control">
+              <label class="label" for="msg">Message: </label>
+              <input class="input is-link" placeholder="ex. Greetings!" id="msg" type="text" formControlName="msg"/>
+            </div> </div>
+              <div><label class="label" for="btn">Send: </label>
+              <button id="btn" class="button is-dark is-primary">Send Message</button> </div>
+            </div> </div>
 
-            <div>
-              <b> <button>
-                Send Message
-              </button> </b>
-            </div>
           </form>
         </div>
-
       </table>
-      <div>
-
-      </div>
-    </div>
+      <div> </div> </div>
 
   </li>
 </ol>

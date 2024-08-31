@@ -1,38 +1,39 @@
-<div *ngIf="isMyItems">
-  <h2>Start New Auction:</h2>
-</div>
+<div *ngIf="isMyItems" xmlns="http://www.w3.org/1999/html">
+  <h2 class="title">Start New Auction:</h2> </div>
+<div *ngIf="!isMyItems">
+  <h2 class="title">Browse:</h2> </div>
 
 <div *ngIf="isMyItems">
-  <b> <button class="myButton2" (click)="reroute()" [disabled]="loading || !isMyItems">
-    Start New Auction
-  </button> </b>
-</div>
+  <div class="control">
+    <button class="button is-primary is-dark" (click)="reroute()" [disabled]="loading || !isMyItems">
+      Start New Auction </button> </div> </div>
+
+<hr class="bd-hr">
 
 <div *ngIf="isMyItems">
-  <h2>Manage Your Auctions:</h2>
-</div>
+  <h2 class="title">Manage Your Auctions:</h2> </div>
 
 <div *ngIf="form">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="displayTable">
 
-      <div class="displayTableCell">
-        <label class="leftMargin" for="itemSearch">Search for items: </label>
-        <input class="leftMargin" id="itemSearch" type="text" formControlName="itemSearch" />
-      </div>
+    <div class="field is-horizontal"> <div class="field-body">
+      <div class="field"> <div class="control">
+        <label class="label" for="itemSearch">Search for items: </label>
+        <input class="input is-info" placeholder="ex. 'Kidneys'" id="itemSearch" type="text" formControlName="itemSearch"/>
+      </div> </div>
 
-      <div class="displayTableCell">
-        <label for="maxPrice">Budget:</label>
-        <input id="maxPrice" type="number" min="0" formControlName="maxPrice" />
-      </div>
+      <div class="field"> <div class="control">
+        <label class="label" for="maxPrice">Budget: </label>
+        <input class="input is-info" placeholder="ex. 200" id="maxPrice" type="number" formControlName="maxPrice"/>
+      </div> </div>
 
-      <div class="displayTableCell">
-        <label for="locationSearch">Search for location: </label>
-        <input id="locationSearch" type="text" formControlName="locationSearch" />
-      </div>
+      <div class="field"> <div class="control">
+        <label class="label" for="locationSearch">Search for location: </label>
+        <input class="input is-info" placeholder="ex. Nigeria" id="locationSearch" type="text" formControlName="locationSearch"/>
+      </div> </div>
 
-      <div class="displayTableCell">
-        <label for="selectCategory">Category:</label>
+      <div class="field">
+        <label class="label">Category: </label> <div class="control"> <div class="select is-info">
         <select id="selectCategory" (change)="updateSelectedCategory($event)">
           <option value="none">None</option>
           <option value="food">Food</option>
@@ -46,48 +47,43 @@
           <option value="furniture">Furniture</option>
           <option value="music">Music</option>
         </select>
-      </div>
+      </div> </div> </div>
 
-      <div class="displayTableCell">
-        <label class="invisible">.</label>
-        <b> <button class="myButton" [disabled]="loading">
-          Search
-        </button> </b>
-      </div>
+      <div class="field"> <div class="control">
+        <label class="label">Search:</label>
+        <button class="button is-primary is-dark" [disabled]="loading">Search</button> </div> </div>
 
-    </div>
+    </div> </div>
   </form>
 </div>
 
+<hr class="bd-hr">
+
 <div *ngIf="loaded && finalItems.length == 0">
-  <h2>No auctions found.</h2>
-</div>
+  <h2 class="title">No Auctions Found. 😔</h2> </div>
 
-<ol>
-  <li *ngFor='let items of finalItems'>
-    <a [routerLink]="['/items', items.id]">
-      <div class="midnightBlue" *ngFor="let item of items.items">
-        {{item.name}}
+<div class="fixed-grid">
+  <div class="grid">
+    <div class="cell py-3 px-4 has-background-black has-radius-normal" *ngFor='let items of finalItems'>
+      <a class="title is-5 has-text-link" [routerLink]="['/items', items.id]"
+         *ngFor="let item of items.items let i = index; let last = last">
+          {{item.name}}{{!last ? ',' : ''}} </a>
+
+      <div *ngIf="items">
+        <table>
+          <tr>
+            <th>Current Bid</th> <th>Buy Price</th> <th>End Date</th> <th>Location</th>
+          </tr>
+          <tr>
+            <td>{{items.currentBid}}</td> <td>{{items.buyPrice}}</td> <td>{{items.ends}}</td>
+            <td>{{items.location.country}}, {{items.location.location}}</td>
+          </tr>
+        </table>
       </div>
-    </a>
 
-    <div *ngIf="items">
-      <table>
-        <tr>
-          <th>Current Bid</th>
-          <th>Buy Price</th>
-          <th>End Date</th>
-          <th>Location</th>
-        </tr>
-        <tr>
-          <td>{{items.currentBid}}</td>
-          <td>{{items.buyPrice}}</td>
-          <td>{{items.ends}}</td>
-          <td>{{items.location.country}}, {{items.location.location}}</td>
-        </tr>
-      </table>
+      <br>
+
     </div>
-
-  </li>
-</ol>
+  </div>
+</div>
 <router-outlet></router-outlet>
