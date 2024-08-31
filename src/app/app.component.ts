@@ -25,7 +25,7 @@ export class AppComponent implements OnInit{
   logout(): void {
     this.authenticationService.logout();
     this.user = null;
-    alert("Logged out successfully!");
+    //alert("Logged out successfully!");
   }
 
   ngOnInit() {

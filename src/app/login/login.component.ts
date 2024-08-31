@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
                 },
               error => { alert(error); }
             );
-          alert("Logged in successfully!");
+          //alert("Logged in successfully!");
           this.router.navigate([this.returnUrl]);
 
           //scuffed way to ensure navigate finishes before we refresh and "overwrite" it
