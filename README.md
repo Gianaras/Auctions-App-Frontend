@@ -1,5 +1,7 @@
 # Auctions App Front End
 
+![showcase gif](tedi_showcase.gif)
+
 # Εργασία για Τεχνολογίες Εφαρμογών Διαδικτύου
 
 ## ΚΕΦΑΛΑΙΑ
@@ -69,7 +71,7 @@ To BackEnd έχει γίνει με Spring Boot, και το FrontEnd με Angul
 
 Εικόνα της βάσης στο MySQL:
 
-!!! Εδώ θα βάλω μία εικόνα που έχω της βάσης που είναι πολύ ωραία όταν το κάνω αυτό pdf
+![database schema image](tediDB.png)
 
 Έχουν δημιουργηθεί κλάσεις/πίνακες `Bidder` και `Seller`, που συνδέονται με τον `User` με 1-1 σχέση. Το πεδίο `admin` του `User` δείχνει αν είναι διαχειριστής ή όχι.
 
